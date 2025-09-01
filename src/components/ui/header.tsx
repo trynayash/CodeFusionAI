@@ -1,9 +1,13 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Menu, X, Code, Sparkles } from "lucide-react";
+import React, { useState } from 'react';
+import { Menu, X, Code, Sparkles, LogOut, User } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from './button';
+import { useAuth } from '@/hooks/useAuth';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <header className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border/30">
@@ -29,19 +33,50 @@ export function Header() {
             <a href="#ai-assistant" className="text-foreground/80 hover:text-primary transition-colors">
               AI Assistant
             </a>
-            <a href="#pricing" className="text-foreground/80 hover:text-primary transition-colors">
-              Pricing
+            <a href="#testimonials" className="text-foreground/80 hover:text-primary transition-colors">
+              Testimonials
             </a>
           </nav>
 
-          {/* Desktop CTA */}
+          {/* Desktop CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="glass" className="text-foreground/80 hover:text-primary">
-              Sign In
-            </Button>
-            <Button variant="gradient" className="glow-hover">
-              Get Started Free
-            </Button>
+            {user ? (
+              <>
+                <Button 
+                  variant="glass" 
+                  className="text-foreground/80 hover:text-primary"
+                  onClick={() => navigate('/editor')}
+                >
+                  <Code className="w-4 h-4 mr-2" />
+                  Code Editor
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="text-foreground/80 hover:text-primary"
+                  onClick={signOut}
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button 
+                  variant="glass" 
+                  className="text-foreground/80 hover:text-primary"
+                  onClick={() => navigate('/auth')}
+                >
+                  Sign In
+                </Button>
+                <Button 
+                  variant="gradient" 
+                  className="glow-hover"
+                  onClick={() => navigate('/auth')}
+                >
+                  Get Started Free
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -66,16 +101,60 @@ export function Header() {
               <a href="#ai-assistant" className="text-foreground/80 hover:text-primary transition-colors px-4 py-2">
                 AI Assistant
               </a>
-              <a href="#pricing" className="text-foreground/80 hover:text-primary transition-colors px-4 py-2">
-                Pricing
+              <a href="#testimonials" className="text-foreground/80 hover:text-primary transition-colors px-4 py-2">
+                Testimonials
               </a>
+              
               <div className="flex flex-col space-y-2 px-4 pt-4 border-t border-border/30">
-                <Button variant="glass" className="justify-start">
-                  Sign In
-                </Button>
-                <Button variant="gradient" className="justify-start">
-                  Get Started Free
-                </Button>
+                {user ? (
+                  <>
+                    <Button 
+                      variant="glass" 
+                      className="justify-start"
+                      onClick={() => {
+                        navigate('/editor');
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      <Code className="w-4 h-4 mr-2" />
+                      Code Editor
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="justify-start"
+                      onClick={() => {
+                        signOut();
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button 
+                      variant="glass" 
+                      className="justify-start"
+                      onClick={() => {
+                        navigate('/auth');
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      Sign In
+                    </Button>
+                    <Button 
+                      variant="gradient" 
+                      className="justify-start"
+                      onClick={() => {
+                        navigate('/auth');
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      Get Started Free
+                    </Button>
+                  </>
+                )}
               </div>
             </nav>
           </div>

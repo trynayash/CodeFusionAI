@@ -1,7 +1,9 @@
-import { Button } from "@/components/ui/button";
+import { Button } from './button';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Sparkles, Code, Brain } from "lucide-react";
 
 export function CTASection() {
+  const navigate = useNavigate();
   return (
     <section id="pricing" className="py-24 relative overflow-hidden">
       {/* Background with Gradient */}
@@ -62,6 +64,7 @@ export function CTASection() {
             <Button 
               size="lg" 
               className="group bg-white text-primary hover:bg-white/90 shadow-hero px-8 py-4 text-lg font-semibold rounded-xl"
+              onClick={() => navigate('/auth')}
             >
               Start Learning Now
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
