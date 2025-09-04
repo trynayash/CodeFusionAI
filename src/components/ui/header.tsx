@@ -24,17 +24,17 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-foreground/80 hover:text-primary transition-colors">
+            <a href="/features" className="text-foreground/80 hover:text-primary transition-colors">
               Features
             </a>
-            <a href="#courses" className="text-foreground/80 hover:text-primary transition-colors">
+            <a href="/courses" className="text-foreground/80 hover:text-primary transition-colors">
               Courses
             </a>
-            <a href="#ai-assistant" className="text-foreground/80 hover:text-primary transition-colors">
-              AI Assistant
+            <a href="/about" className="text-foreground/80 hover:text-primary transition-colors">
+              About
             </a>
-            <a href="#testimonials" className="text-foreground/80 hover:text-primary transition-colors">
-              Testimonials
+            <a href="/contact" className="text-foreground/80 hover:text-primary transition-colors">
+              Contact
             </a>
           </nav>
 
@@ -42,6 +42,14 @@ export function Header() {
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
               <>
+                <Button 
+                  variant="glass" 
+                  className="text-foreground/80 hover:text-primary"
+                  onClick={() => navigate('/dashboard')}
+                >
+                  <User className="w-4 h-4 mr-2" />
+                  Dashboard
+                </Button>
                 <Button 
                   variant="glass" 
                   className="text-foreground/80 hover:text-primary"
@@ -92,46 +100,57 @@ export function Header() {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-border/30">
             <nav className="flex flex-col space-y-3">
-              <a href="#features" className="text-foreground/80 hover:text-primary transition-colors px-4 py-2">
+              <a href="/features" className="text-foreground/80 hover:text-primary transition-colors px-4 py-2">
                 Features
               </a>
-              <a href="#courses" className="text-foreground/80 hover:text-primary transition-colors px-4 py-2">
+              <a href="/courses" className="text-foreground/80 hover:text-primary transition-colors px-4 py-2">
                 Courses
               </a>
-              <a href="#ai-assistant" className="text-foreground/80 hover:text-primary transition-colors px-4 py-2">
-                AI Assistant
+              <a href="/about" className="text-foreground/80 hover:text-primary transition-colors px-4 py-2">
+                About
               </a>
-              <a href="#testimonials" className="text-foreground/80 hover:text-primary transition-colors px-4 py-2">
-                Testimonials
+              <a href="/contact" className="text-foreground/80 hover:text-primary transition-colors px-4 py-2">
+                Contact
               </a>
               
               <div className="flex flex-col space-y-2 px-4 pt-4 border-t border-border/30">
-                {user ? (
-                  <>
-                    <Button 
-                      variant="glass" 
-                      className="justify-start"
-                      onClick={() => {
-                        navigate('/editor');
-                        setIsMenuOpen(false);
-                      }}
-                    >
-                      <Code className="w-4 h-4 mr-2" />
-                      Code Editor
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      className="justify-start"
-                      onClick={() => {
-                        signOut();
-                        setIsMenuOpen(false);
-                      }}
-                    >
-                      <LogOut className="w-4 h-4 mr-2" />
-                      Sign Out
-                    </Button>
-                  </>
-                ) : (
+                  {user ? (
+                    <>
+                      <Button 
+                        variant="glass" 
+                        className="justify-start"
+                        onClick={() => {
+                          navigate('/dashboard');
+                          setIsMenuOpen(false);
+                        }}
+                      >
+                        <User className="w-4 h-4 mr-2" />
+                        Dashboard
+                      </Button>
+                      <Button 
+                        variant="glass" 
+                        className="justify-start"
+                        onClick={() => {
+                          navigate('/editor');
+                          setIsMenuOpen(false);
+                        }}
+                      >
+                        <Code className="w-4 h-4 mr-2" />
+                        Code Editor
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="justify-start"
+                        onClick={() => {
+                          signOut();
+                          setIsMenuOpen(false);
+                        }}
+                      >
+                        <LogOut className="w-4 h-4 mr-2" />
+                        Sign Out
+                      </Button>
+                    </>
+                  ) : (
                   <>
                     <Button 
                       variant="glass" 
