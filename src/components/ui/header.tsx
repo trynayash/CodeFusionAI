@@ -3,6 +3,7 @@ import { Menu, X, Code, Sparkles, LogOut, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from './button';
 import { useAuth } from '@/hooks/useAuth';
+import logoSvg from '@/assets/logo.svg';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,11 +15,8 @@ export function Header() {
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <div className="relative">
-              <Code className="h-8 w-8 text-primary" />
-              <Sparkles className="h-4 w-4 text-accent absolute -top-1 -right-1" />
-            </div>
+          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
+            <img src={logoSvg} alt="CodeFusion AI" className="h-8 w-8" />
             <h1 className="text-xl font-bold gradient-text">CodeFusion AI</h1>
           </div>
 
