@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Play, Save, History, LogOut, Code, Trash2, Plus } from 'lucide-react';
+import { Play, Save, History, LogOut, Code, Trash2, Plus, X } from 'lucide-react';
 import { Editor } from '@monaco-editor/react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -12,6 +12,15 @@ import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { Header } from '@/components/ui/header';
+
+// Import language icons
+import pythonIcon from '@/assets/languages/python.svg';
+import javascriptIcon from '@/assets/languages/javascript.svg';
+import typescriptIcon from '@/assets/languages/typescript.svg';
+import javaIcon from '@/assets/languages/java.svg';
+import cppIcon from '@/assets/languages/cpp.svg';
+import cIcon from '@/assets/languages/c.svg';
 
 interface CodeSnippet {
   id: string;
@@ -47,13 +56,22 @@ int main() {
   typescript: 'console.log("Hello, World!");',
 };
 
+const languageIcons = {
+  python: pythonIcon,
+  javascript: javascriptIcon,
+  typescript: typescriptIcon,
+  java: javaIcon,
+  cpp: cppIcon,
+  c: cIcon,
+};
+
 const languages = [
-  { value: 'python', label: 'Python' },
-  { value: 'javascript', label: 'JavaScript' },
-  { value: 'typescript', label: 'TypeScript' },
-  { value: 'java', label: 'Java' },
-  { value: 'cpp', label: 'C++' },
-  { value: 'c', label: 'C' },
+  { value: 'python', label: 'Python', icon: pythonIcon },
+  { value: 'javascript', label: 'JavaScript', icon: javascriptIcon },
+  { value: 'typescript', label: 'TypeScript', icon: typescriptIcon },
+  { value: 'java', label: 'Java', icon: javaIcon },
+  { value: 'cpp', label: 'C++', icon: cppIcon },
+  { value: 'c', label: 'C', icon: cIcon },
 ];
 
 export default function CodeEditor() {
@@ -240,61 +258,72 @@ export default function CodeEditor() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-card">
-        <div className="flex items-center justify-between p-4">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <Code className="w-6 h-6 text-primary" />
-              <h1 className="text-xl font-bold text-foreground">CodeFusion AI</h1>
+      <Header />
+      
+      {/* Editor Toolbar */}
+      <div className="pt-16 border-b border-border bg-card/50 backdrop-blur-sm">
+        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between py-4 gap-4">
+            <div className="flex items-center space-x-4 flex-wrap gap-2">
+              <div className="flex items-center space-x-2">
+                <Code className="w-5 h-5 text-primary" />
+                <span className="font-semibold text-foreground hidden sm:inline">Code Editor</span>
+              </div>
+              <Separator orientation="vertical" className="h-6 hidden sm:block" />
+              <Input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="w-full sm:w-48 bg-muted"
+                placeholder="Snippet title"
+              />
             </div>
-            <Separator orientation="vertical" className="h-6" />
-            <Input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="w-48 bg-muted"
-              placeholder="Snippet title"
-            />
-          </div>
 
-          <div className="flex items-center space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowHistory(!showHistory)}
-            >
-              <History className="w-4 h-4 mr-2" />
-              History
-            </Button>
-            <Button variant="outline" size="sm" onClick={newSnippet}>
-              <Plus className="w-4 h-4 mr-2" />
-              New
-            </Button>
-            <Button variant="outline" size="sm" onClick={saveSnippet}>
-              <Save className="w-4 h-4 mr-2" />
-              Save
-            </Button>
-            <Button variant="outline" size="sm" onClick={signOut}>
-              <LogOut className="w-4 h-4 mr-2" />
-              Sign Out
-            </Button>
+            <div className="flex items-center space-x-2 flex-wrap gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowHistory(!showHistory)}
+                className="flex-shrink-0"
+              >
+                <History className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">History</span>
+              </Button>
+              <Button variant="outline" size="sm" onClick={newSnippet} className="flex-shrink-0">
+                <Plus className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">New</span>
+              </Button>
+              <Button variant="outline" size="sm" onClick={saveSnippet} className="flex-shrink-0">
+                <Save className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Save</span>
+              </Button>
+            </div>
           </div>
         </div>
-      </header>
+      </div>
 
-      <div className="flex h-[calc(100vh-73px)]">
+      <div className="flex flex-col lg:flex-row h-[calc(100vh-140px)]">
         {/* Sidebar - History */}
         {showHistory && (
           <motion.div
             initial={{ width: 0, opacity: 0 }}
-            animate={{ width: 300, opacity: 1 }}
+            animate={{ width: window.innerWidth < 1024 ? "100%" : 300, opacity: 1 }}
             exit={{ width: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="border-r border-border bg-card overflow-hidden"
+            className="border-r border-border bg-card overflow-hidden lg:max-w-[300px] w-full lg:w-auto"
           >
             <div className="p-4">
-              <h3 className="text-lg font-semibold mb-4">Code History</h3>
-              <ScrollArea className="h-[calc(100vh-150px)]">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold">Code History</h3>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowHistory(false)}
+                  className="lg:hidden"
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+              <ScrollArea className="h-[calc(100vh-200px)]">
                 <div className="space-y-2">
                   {snippets.map((snippet) => (
                     <Card
@@ -303,7 +332,14 @@ export default function CodeEditor() {
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex-1" onClick={() => loadSnippet(snippet)}>
-                          <h4 className="font-medium truncate">{snippet.title}</h4>
+                          <div className="flex items-center space-x-2 mb-1">
+                            <img 
+                              src={languageIcons[snippet.language as keyof typeof languageIcons]} 
+                              alt={snippet.language}
+                              className="w-4 h-4"
+                            />
+                            <h4 className="font-medium truncate">{snippet.title}</h4>
+                          </div>
                           <p className="text-sm text-muted-foreground capitalize">
                             {snippet.language}
                           </p>
@@ -332,60 +368,93 @@ export default function CodeEditor() {
         )}
 
         {/* Main Editor Area */}
-        <div className="flex-1 flex">
+        <div className="flex-1 flex flex-col lg:flex-row">
           {/* Code Editor */}
-          <div className="flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col min-h-0">
             {/* Editor Controls */}
-            <div className="flex items-center justify-between p-4 border-b border-border bg-card">
-              <div className="flex items-center space-x-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border-b border-border bg-card gap-4">
+              <div className="flex items-center space-x-4 w-full sm:w-auto">
                 <Select value={language} onValueChange={handleLanguageChange}>
-                  <SelectTrigger className="w-40">
-                    <SelectValue placeholder="Select language" />
+                  <SelectTrigger className="w-full sm:w-48">
+                    <div className="flex items-center space-x-2">
+                      <img 
+                        src={languageIcons[language as keyof typeof languageIcons]} 
+                        alt={language}
+                        className="w-4 h-4"
+                      />
+                      <SelectValue placeholder="Select language" />
+                    </div>
                   </SelectTrigger>
                   <SelectContent>
                     {languages.map((lang) => (
                       <SelectItem key={lang.value} value={lang.value}>
-                        {lang.label}
+                        <div className="flex items-center space-x-2">
+                          <img src={lang.icon} alt={lang.label} className="w-4 h-4" />
+                          <span>{lang.label}</span>
+                        </div>
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              <Button onClick={runCode} disabled={isRunning} className="bg-primary hover:bg-primary-dark">
+              <Button 
+                onClick={runCode} 
+                disabled={isRunning} 
+                className="bg-primary hover:bg-primary/90 w-full sm:w-auto"
+              >
                 <Play className="w-4 h-4 mr-2" />
                 {isRunning ? 'Running...' : 'Run Code'}
               </Button>
             </div>
 
             {/* Monaco Editor */}
-            <div className="flex-1">
+            <div className="flex-1 min-h-[400px]">
               <Editor
                 height="100%"
-                language={language}
+                language={language === 'cpp' ? 'cpp' : language}
                 value={code}
                 onChange={(value) => setCode(value || '')}
                 theme="vs-dark"
                 options={{
                   fontSize: 14,
-                  minimap: { enabled: false },
+                  minimap: { enabled: window.innerWidth > 768 },
                   scrollBeyondLastLine: false,
                   automaticLayout: true,
                   wordWrap: 'on',
+                  lineNumbers: 'on',
+                  folding: true,
+                  formatOnPaste: true,
+                  formatOnType: true,
+                  autoIndent: 'full',
                 }}
               />
             </div>
           </div>
 
           {/* Output Panel */}
-          <div className="w-1/3 border-l border-border bg-card flex flex-col">
+          <div className="w-full lg:w-1/3 border-t lg:border-t-0 lg:border-l border-border bg-card flex flex-col min-h-[300px] lg:min-h-0">
             <div className="p-4 border-b border-border">
-              <h3 className="font-semibold">Output</h3>
+              <h3 className="font-semibold flex items-center">
+                <Play className="w-4 h-4 mr-2 text-primary" />
+                Output
+              </h3>
             </div>
             <ScrollArea className="flex-1 p-4">
-              <pre className="text-sm whitespace-pre-wrap font-mono">
-                {output || 'Click "Run Code" to see output here...'}
-              </pre>
+              <div className="space-y-2">
+                {output ? (
+                  <div className="bg-muted/30 rounded-lg p-3">
+                    <pre className="text-sm whitespace-pre-wrap font-mono text-foreground">
+                      {output}
+                    </pre>
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Play className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                    <p className="text-sm">Click "Run Code" to see output here</p>
+                  </div>
+                )}
+              </div>
             </ScrollArea>
           </div>
         </div>
