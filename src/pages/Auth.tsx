@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
+import { PasswordValidator } from '@/components/ui/password-validator';
 import { useAuth } from '@/hooks/useAuth';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/integrations/supabase/client';
@@ -28,6 +29,7 @@ export default function Auth() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
   const { signUp, signIn, user, loading } = useAuth();
   const navigate = useNavigate();
 
@@ -45,6 +47,14 @@ export default function Auth() {
       signUpForm.setError('confirmPassword', {
         type: 'manual',
         message: 'Passwords do not match'
+      });
+      return;
+    }
+
+    if (!isPasswordValid) {
+      signUpForm.setError('password', {
+        type: 'manual',
+        message: 'Password does not meet security requirements'
       });
       return;
     }
@@ -194,9 +204,12 @@ export default function Auth() {
                     <Input
                       id="password"
                       type={showPassword ? "text" : "password"}
-                      {...signUpForm.register('password', { required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters' } })}
+                      {...signUpForm.register('password', { 
+                        required: 'Password is required',
+                        validate: () => isPasswordValid || 'Password does not meet security requirements'
+                      })}
                       className="bg-white/10 border-white/20 text-white placeholder:text-white/70 pr-10"
-                      placeholder="Create a password"
+                      placeholder="Create a secure password"
                     />
                     <Button
                       type="button"
@@ -211,6 +224,10 @@ export default function Auth() {
                   {signUpForm.formState.errors.password && (
                     <p className="text-destructive-foreground text-sm">{signUpForm.formState.errors.password.message}</p>
                   )}
+                  <PasswordValidator 
+                    password={signUpForm.watch('password') || ''} 
+                    onValidationChange={setIsPasswordValid}
+                  />
                 </div>
 
                 <div className="space-y-2">
@@ -241,7 +258,7 @@ export default function Auth() {
                 <Button
                   type="submit"
                   className="w-full bg-primary hover:bg-primary-dark text-primary-foreground"
-                  disabled={signUpForm.formState.isSubmitting}
+                  disabled={signUpForm.formState.isSubmitting || !isPasswordValid}
                 >
                   {signUpForm.formState.isSubmitting ? 'Creating Account...' : 'Create Account'}
                 </Button>
