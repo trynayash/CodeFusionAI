@@ -136,35 +136,35 @@ export default function CodeEditor() {
     setIsRunning(true);
     
     try {
-      // Simulate code execution with basic validation
+      // Simulate code execution with advanced validation
       const errors = validateCode(code, language);
       
       if (errors.length > 0) {
-        const errorMessage = errors.join(', ');
-        setOutput(`Error: ${errorMessage}`);
+        const errorMessage = errors.join('\n');
+        setOutput(`Compilation/Runtime Errors:\n${errorMessage}\n\nPlease fix these errors and try again.`);
         toast({
           title: "Code execution failed",
-          description: `Failed to run code: ${errorMessage}`,
+          description: `${errors.length} error${errors.length > 1 ? 's' : ''} found in your code`,
           variant: "destructive",
         });
       } else {
-        // Simulate successful execution
+        // Simulate successful execution with detailed output
         const result = simulateCodeExecution(code, language);
-        setOutput(result);
+        setOutput(`Execution Output:\n${result}\n\nCode executed successfully!`);
         toast({
           title: "Code executed successfully!",
-          description: "Your code has been run successfully.",
+          description: "Your code ran without errors.",
         });
         
         // Save code to Supabase automatically
         await saveSnippet();
       }
     } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : 'Unknown error occurred';
-      setOutput(`Runtime Error: ${errorMsg}`);
+      const errorMsg = error instanceof Error ? error.message : 'Unknown runtime error occurred';
+      setOutput(`Runtime Error:\n${errorMsg}\n\nThis error occurred during code execution.`);
       toast({
-        title: "Code execution failed",
-        description: `Failed to run code: ${errorMsg}`,
+        title: "Runtime Error",
+        description: `Execution failed: ${errorMsg}`,
         variant: "destructive",
       });
     }
@@ -180,38 +180,95 @@ export default function CodeEditor() {
     switch (language) {
       case 'javascript':
       case 'typescript':
+        // Check for common syntax errors
         if (code.includes('undefined_function(')) {
-          errors.push('undefined_function is not defined');
+          errors.push('ReferenceError: undefined_function is not defined');
         }
         if (code.match(/\blet\s+\w+\s*;\s*\w+\s*=/)) {
-          errors.push('Cannot access variable before initialization');
+          errors.push('ReferenceError: Cannot access variable before initialization');
+        }
+        if (code.match(/\{[^}]*$/)) {
+          errors.push('SyntaxError: Unexpected end of input - missing closing brace');
+        }
+        if (code.match(/console\.log\([^)]*$/)) {
+          errors.push('SyntaxError: Missing closing parenthesis in console.log');
+        }
+        if (code.includes('funtion')) {
+          errors.push('SyntaxError: Unexpected token - did you mean "function"?');
         }
         break;
+        
       case 'python':
-        if (code.includes('undefined_variable')) {
-          errors.push("name 'undefined_variable' is not defined");
+        if (code.includes('undefined_variable') && !code.includes('undefined_variable =')) {
+          errors.push("NameError: name 'undefined_variable' is not defined");
         }
         if (code.match(/print\([^)]*[^)]\s*$/m)) {
-          errors.push('SyntaxError: unexpected EOF while parsing');
+          errors.push('SyntaxError: unexpected EOF while parsing - missing closing parenthesis');
+        }
+        if (code.match(/^\s*if\s+.*:\s*$/m) && !code.match(/^\s*if\s+.*:\s*\n\s+.+/m)) {
+          errors.push('IndentationError: expected an indented block after if statement');
+        }
+        if (code.includes('def ') && code.match(/def\s+\w+\([^)]*\):\s*$/m)) {
+          errors.push('IndentationError: expected an indented block after function definition');
         }
         break;
+        
       case 'java':
-        if (!code.includes('public static void main')) {
-          errors.push('Main method not found');
+        if (!code.includes('public static void main') && !code.includes('class ')) {
+          errors.push('Error: Main method not found in class');
         }
         if (code.match(/System\.out\.println\([^)]*[^)]\s*$/m)) {
-          errors.push('Syntax error: missing closing parenthesis');
+          errors.push('Syntax error: missing closing parenthesis in println');
+        }
+        if (code.includes('public class') && !code.match(/public\s+class\s+\w+/)) {
+          errors.push('Syntax error: invalid class declaration');
+        }
+        if (code.match(/\{[^}]*$/)) {
+          errors.push('Syntax error: missing closing brace');
         }
         break;
+        
       case 'cpp':
-      case 'c':
         if (!code.includes('#include')) {
-          errors.push('Missing include directives');
+          errors.push('Error: Missing include directives (e.g., #include <iostream>)');
         }
         if (!code.includes('main(')) {
-          errors.push('Main function not found');
+          errors.push('Error: Main function not found');
+        }
+        if (code.includes('cout') && !code.includes('#include <iostream>')) {
+          errors.push('Error: cout requires #include <iostream>');
+        }
+        if (code.match(/cout\s*<<\s*[^;]*$/m)) {
+          errors.push('Syntax error: missing semicolon after cout statement');
         }
         break;
+        
+      case 'c':
+        if (!code.includes('#include')) {
+          errors.push('Error: Missing include directives (e.g., #include <stdio.h>)');
+        }
+        if (!code.includes('main(')) {
+          errors.push('Error: Main function not found');
+        }
+        if (code.includes('printf') && !code.includes('#include <stdio.h>')) {
+          errors.push('Error: printf requires #include <stdio.h>');
+        }
+        if (code.match(/printf\([^)]*[^)]\s*$/m)) {
+          errors.push('Syntax error: missing closing parenthesis in printf');
+        }
+        break;
+    }
+    
+    // Common syntax checks for all languages
+    if (code.trim() === '') {
+      errors.push('Error: Empty code - please write some code to execute');
+    }
+    
+    // Check for unmatched parentheses
+    const openParens = (code.match(/\(/g) || []).length;
+    const closeParens = (code.match(/\)/g) || []).length;
+    if (openParens !== closeParens) {
+      errors.push('Syntax error: Unmatched parentheses detected');
     }
     
     return errors;
@@ -572,23 +629,39 @@ export default function CodeEditor() {
           {/* Output Panel */}
           <div className="w-full lg:w-1/3 border-t lg:border-t-0 lg:border-l border-border bg-card flex flex-col min-h-[300px] lg:min-h-0">
             <div className="p-4 border-b border-border">
-              <h3 className="font-semibold flex items-center">
-                <Play className="w-4 h-4 mr-2 text-primary" />
-                Output
+              <h3 className="font-semibold flex items-center space-x-2">
+                <Play className="w-4 h-4 text-primary" />
+                <span>Output</span>
+                {output && (
+                  <div className={`w-2 h-2 rounded-full ${
+                    output.includes('Error') ? 'bg-destructive' : 'bg-success'
+                  }`}></div>
+                )}
               </h3>
             </div>
             <ScrollArea className="flex-1 p-4">
               <div className="space-y-2">
                 {output ? (
-                  <div className="bg-muted/30 rounded-lg p-3">
-                    <pre className="text-sm whitespace-pre-wrap font-mono text-foreground">
+                  <div className={`rounded-lg p-4 border ${
+                    output.includes('Error') 
+                      ? 'bg-destructive/10 border-destructive/20 text-destructive-foreground' 
+                      : 'bg-success/10 border-success/20 text-foreground'
+                  }`}>
+                    <pre className="text-sm whitespace-pre-wrap font-mono">
                       {output}
                     </pre>
                   </div>
                 ) : (
                   <div className="text-center py-8 text-muted-foreground">
                     <Play className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                    <p className="text-sm">Click "Run Code" to see output here</p>
+                    <p className="text-sm mb-2">Click "Run Code" to see output here</p>
+                    <div className="text-xs space-y-1 max-w-xs mx-auto">
+                      <p>Tips:</p>
+                      <p>• Write valid syntax for your selected language</p>
+                      <p>• Check for missing imports or includes</p>
+                      <p>• Ensure proper indentation (Python)</p>
+                      <p>• Close all parentheses and braces</p>
+                    </div>
                   </div>
                 )}
               </div>

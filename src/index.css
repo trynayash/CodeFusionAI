@@ -246,4 +246,32 @@
   .hero-shadow {
     box-shadow: var(--shadow-hero);
   }
+
+  /* Enhanced responsive utilities */
+  .mobile-hidden {
+    @apply hidden sm:block;
+  }
+
+  .mobile-only {
+    @apply block sm:hidden;
+  }
+
+  /* Enhanced card animations */
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+
+  /* Better gradient backgrounds */
+  .gradient-card {
+    background: var(--gradient-card);
+  }
+
+  /* 3D perspective effects */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .transform-3d {
+    transform-style: preserve-3d;
+  }
 }

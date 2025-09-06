@@ -6,6 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '@/components/ui/header';
 import { Footer } from '@/components/ui/footer';
+import { Dashboard3D } from '@/components/ui/dashboard-3d';
 import { supabase } from '@/integrations/supabase/client';
 import { useEffect, useState } from 'react';
 
@@ -259,11 +260,32 @@ export default function Dashboard() {
             </motion.div>
           </div>
 
-          {/* Continue Coding CTA */}
+          {/* 3D Visualization */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
+            className="mt-8 sm:mt-12"
+          >
+            <Card className="glass overflow-hidden">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2 text-lg">
+                  <Code2 className="h-5 w-5 text-primary" />
+                  <span>Interactive 3D Workspace</span>
+                </CardTitle>
+                <CardDescription>Explore your coding journey in 3D space</CardDescription>
+              </CardHeader>
+              <CardContent className="p-0">
+                <Dashboard3D />
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Continue Coding CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
             className="mt-8 sm:mt-12 text-center"
           >
             <Card className="gradient-bg p-6 sm:p-12">

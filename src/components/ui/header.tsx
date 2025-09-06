@@ -16,7 +16,10 @@ export function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
-            <img src={logoSvg} alt="CodeFusion AI" className="h-8 w-8" />
+            <div className="relative">
+              <img src={logoSvg} alt="CodeFusion AI" className="h-10 w-10 drop-shadow-lg" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg blur-sm -z-10"></div>
+            </div>
             <h1 className="text-xl font-bold gradient-text">CodeFusion AI</h1>
           </div>
 
