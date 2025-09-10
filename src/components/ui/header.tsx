@@ -3,7 +3,7 @@ import { Menu, X, Code, Sparkles, LogOut, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from './button';
 import { useAuth } from '@/hooks/useAuth';
-import logoSvg from '@/assets/logo.svg';
+import logoSvg from '@/assets/logo-cool.png';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

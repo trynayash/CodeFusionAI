@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Eye, EyeOff, Code, Sparkles, ArrowLeft } from 'lucide-react';
+import { Eye, EyeOff, Code, Sparkles, ArrowLeft, User, Mail, Lock, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,7 +10,7 @@ import { PasswordValidator } from '@/components/ui/password-validator';
 import { useAuth } from '@/hooks/useAuth';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/integrations/supabase/client';
-import logoSvg from '@/assets/logo.svg';
+import logoSvg from '@/assets/logo-cool.png';
 
 interface SignUpForm {
   fullName: string;
@@ -122,27 +122,38 @@ export default function Auth() {
           {/* Logo */}
           <div className="flex items-center justify-center mb-8">
             <div className="flex items-center space-x-3 text-white">
-              <img src={logoSvg} alt="CodeFusion AI" className="w-12 h-12" />
-              <span className="text-2xl font-bold">CodeFusion AI</span>
+              <div className="relative">
+                <img src={logoSvg} alt="CodeFusion AI" className="w-12 h-12 rounded-lg" />
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg"></div>
+              </div>
+              <span className="text-2xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">CodeFusion AI</span>
             </div>
           </div>
 
-          {/* Toggle buttons */}
-          <div className="flex bg-white/10 rounded-lg p-1 mb-6">
+          {/* Enhanced toggle buttons with better gradients */}
+          <div className="flex bg-white/5 backdrop-blur-sm rounded-xl p-1 mb-8 border border-white/10">
             <Button
               variant={!isSignUp ? "secondary" : "ghost"}
               size="sm"
               onClick={() => setIsSignUp(false)}
-              className="flex-1 text-white hover:bg-white/20"
+              className={`flex-1 transition-all duration-300 ${!isSignUp 
+                ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-lg shadow-primary/25' 
+                : 'text-white/70 hover:text-white hover:bg-white/10'
+              }`}
             >
+              <User className="w-4 h-4 mr-2" />
               Sign In
             </Button>
             <Button
               variant={isSignUp ? "secondary" : "ghost"}
               size="sm"
               onClick={() => setIsSignUp(true)}
-              className="flex-1 text-white hover:bg-white/20"
+              className={`flex-1 transition-all duration-300 ${isSignUp 
+                ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-lg shadow-primary/25' 
+                : 'text-white/70 hover:text-white hover:bg-white/10'
+              }`}
             >
+              <Sparkles className="w-4 h-4 mr-2" />
               Sign Up
             </Button>
           </div>
@@ -159,15 +170,24 @@ export default function Auth() {
                 className="space-y-4"
               >
                 <div className="space-y-2">
-                  <Label htmlFor="fullName" className="text-white">Full Name</Label>
-                  <Input
-                    id="fullName"
-                    {...signUpForm.register('fullName', { required: 'Full name is required' })}
-                    className="bg-white/10 border-white/20 text-white placeholder:text-white/70"
-                    placeholder="Enter your full name"
-                  />
+                  <Label htmlFor="fullName" className="text-white/90 font-medium flex items-center gap-2">
+                    <User className="w-4 h-4" />
+                    Full Name
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="fullName"
+                      {...signUpForm.register('fullName', { required: 'Full name is required' })}
+                      className="bg-white/5 border border-white/20 text-white placeholder:text-white/50 pl-10 py-3 rounded-xl backdrop-blur-sm focus:bg-white/10 focus:border-primary/50 transition-all duration-300"
+                      placeholder="Enter your full name"
+                    />
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white/50" />
+                  </div>
                   {signUpForm.formState.errors.fullName && (
-                    <p className="text-destructive-foreground text-sm">{signUpForm.formState.errors.fullName.message}</p>
+                    <p className="text-red-300 text-sm flex items-center gap-1">
+                      <Shield className="w-3 h-3" />
+                      {signUpForm.formState.errors.fullName.message}
+                    </p>
                   )}
                 </div>
 
@@ -185,21 +205,33 @@ export default function Auth() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-white">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    {...signUpForm.register('email', { required: 'Email is required' })}
-                    className="bg-white/10 border-white/20 text-white placeholder:text-white/70"
-                    placeholder="Enter your email"
-                  />
+                  <Label htmlFor="email" className="text-white/90 font-medium flex items-center gap-2">
+                    <Mail className="w-4 h-4" />
+                    Email
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="email"
+                      type="email"
+                      {...signUpForm.register('email', { required: 'Email is required' })}
+                      className="bg-white/5 border border-white/20 text-white placeholder:text-white/50 pl-10 py-3 rounded-xl backdrop-blur-sm focus:bg-white/10 focus:border-primary/50 transition-all duration-300"
+                      placeholder="Enter your email"
+                    />
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white/50" />
+                  </div>
                   {signUpForm.formState.errors.email && (
-                    <p className="text-destructive-foreground text-sm">{signUpForm.formState.errors.email.message}</p>
+                    <p className="text-red-300 text-sm flex items-center gap-1">
+                      <Shield className="w-3 h-3" />
+                      {signUpForm.formState.errors.email.message}
+                    </p>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-white">Password</Label>
+                  <Label htmlFor="password" className="text-white/90 font-medium flex items-center gap-2">
+                    <Lock className="w-4 h-4" />
+                    Password
+                  </Label>
                   <div className="relative">
                     <Input
                       id="password"
@@ -208,21 +240,25 @@ export default function Auth() {
                         required: 'Password is required',
                         validate: () => isPasswordValid || 'Password does not meet security requirements'
                       })}
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/70 pr-10"
+                      className="bg-white/5 border border-white/20 text-white placeholder:text-white/50 pl-10 pr-12 py-3 rounded-xl backdrop-blur-sm focus:bg-white/10 focus:border-primary/50 transition-all duration-300"
                       placeholder="Create a secure password"
                     />
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white/50" />
                     <Button
                       type="button"
                       variant="ghost"
                       size="sm"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white hover:bg-transparent"
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white/50 hover:text-white hover:bg-white/10 rounded-lg"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </Button>
                   </div>
                   {signUpForm.formState.errors.password && (
-                    <p className="text-destructive-foreground text-sm">{signUpForm.formState.errors.password.message}</p>
+                    <p className="text-red-300 text-sm flex items-center gap-1">
+                      <Shield className="w-3 h-3" />
+                      {signUpForm.formState.errors.password.message}
+                    </p>
                   )}
                   <PasswordValidator 
                     password={signUpForm.watch('password') || ''} 
@@ -257,10 +293,20 @@ export default function Auth() {
 
                 <Button
                   type="submit"
-                  className="w-full bg-primary hover:bg-primary-dark text-primary-foreground"
+                  className="w-full bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-semibold py-3 rounded-xl shadow-lg shadow-primary/25 transition-all duration-300 hover:shadow-primary/40 hover:scale-[1.02]"
                   disabled={signUpForm.formState.isSubmitting || !isPasswordValid}
                 >
-                  {signUpForm.formState.isSubmitting ? 'Creating Account...' : 'Create Account'}
+                  {signUpForm.formState.isSubmitting ? (
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      Creating Account...
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-4 h-4" />
+                      Create Account
+                    </div>
+                  )}
                 </Button>
 
                 <div className="relative my-6">
@@ -351,10 +397,20 @@ export default function Auth() {
 
                 <Button
                   type="submit"
-                  className="w-full bg-primary hover:bg-primary-dark text-primary-foreground"
+                  className="w-full bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-semibold py-3 rounded-xl shadow-lg shadow-primary/25 transition-all duration-300 hover:shadow-primary/40 hover:scale-[1.02]"
                   disabled={signInForm.formState.isSubmitting}
                 >
-                  {signInForm.formState.isSubmitting ? 'Signing In...' : 'Sign In'}
+                  {signInForm.formState.isSubmitting ? (
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      Signing In...
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <User className="w-4 h-4" />
+                      Sign In
+                    </div>
+                  )}
                 </Button>
 
                 <div className="relative my-6">

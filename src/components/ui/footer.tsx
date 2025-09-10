@@ -1,30 +1,31 @@
 import { Code, Sparkles, Github, Twitter, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const footerLinks = {
   Platform: [
-    { name: "Features", href: "#features" },
-    { name: "Courses", href: "#courses" },
-    { name: "AI Assistant", href: "#ai-assistant" },
-    { name: "Pricing", href: "#pricing" }
+    { name: "Features", href: "/features" },
+    { name: "Courses", href: "/courses" },
+    { name: "AI Assistant", href: "/ai-assistant" },
+    { name: "Pricing", href: "/pricing" }
   ],
   Courses: [
-    { name: "Data Structures & Algorithms", href: "#" },
-    { name: "Web Development", href: "#" },
-    { name: "Python Programming", href: "#" },
-    { name: "Full-Stack Development", href: "#" }
+    { name: "Data Structures & Algorithms", href: "/courses/data-structures-algorithms" },
+    { name: "Web Development", href: "/courses/web-development" },
+    { name: "Python Programming", href: "/courses/python" },
+    { name: "Full-Stack Development", href: "/courses/fullstack" }
   ],
   Resources: [
-    { name: "Documentation", href: "#" },
-    { name: "Community", href: "#" },
-    { name: "Blog", href: "#" },
-    { name: "Help Center", href: "#" }
+    { name: "Documentation", href: "/documentation" },
+    { name: "Community", href: "/community" },
+    { name: "Blog", href: "/blog" },
+    { name: "Help Center", href: "/help" }
   ],
   Company: [
-    { name: "About Us", href: "#" },
-    { name: "Careers", href: "#" },
-    { name: "Contact", href: "#" },
-    { name: "Privacy Policy", href: "#" }
+    { name: "About Us", href: "/about-us" },
+    { name: "Careers", href: "/careers" },
+    { name: "Contact", href: "/contact" },
+    { name: "Privacy Policy", href: "/privacy-policy" }
   ]
 };
 
@@ -45,9 +46,12 @@ export function Footer() {
             {/* Brand Section */}
             <div className="lg:col-span-4">
               <div className="flex items-center space-x-2 mb-4">
-                <div className="relative">
-                  <Code className="h-8 w-8 text-primary" />
-                  <Sparkles className="h-4 w-4 text-accent absolute -top-1 -right-1" />
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent rounded-xl blur-lg group-hover:blur-xl transition-all duration-300 opacity-50"></div>
+                  <div className="relative bg-gradient-to-br from-primary/20 to-accent/20 p-3 rounded-xl backdrop-blur-sm">
+                    <Code className="h-8 w-8 text-primary" />
+                    <Sparkles className="h-4 w-4 text-accent absolute -top-1 -right-1" />
+                  </div>
                 </div>
                 <h1 className="text-xl font-bold gradient-text">CodeFusion AI</h1>
               </div>
@@ -82,12 +86,12 @@ export function Footer() {
                     <ul className="space-y-3">
                       {links.map((link) => (
                         <li key={link.name}>
-                          <a
-                            href={link.href}
-                            className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                          <Link
+                            to={link.href}
+                            className="text-sm text-muted-foreground hover:text-primary transition-all duration-200 hover:translate-x-1 inline-block"
                           >
                             {link.name}
-                          </a>
+                          </Link>
                         </li>
                       ))}
                     </ul>

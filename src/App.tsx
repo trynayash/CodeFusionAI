@@ -12,6 +12,17 @@ import Courses from "./pages/Courses";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import AIAssistant from "./pages/AIAssistant";
+import Pricing from "./pages/Pricing";
+import DataStructuresAlgorithms from "./pages/DataStructuresAlgorithms";
+import WebDevelopment from "./pages/WebDevelopment";
+import Documentation from "./pages/Documentation";
+import Community from "./pages/Community";
+import AboutUs from "./pages/AboutUs";
+import Careers from "./pages/Careers";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Blog from "./pages/Blog";
+import Help from "./pages/Help";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 
@@ -41,6 +52,17 @@ const App = () => (
             <Route path="/courses" element={<Courses />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/ai-assistant" element={<AIAssistant />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/courses/data-structures-algorithms" element={<DataStructuresAlgorithms />} />
+            <Route path="/courses/web-development" element={<WebDevelopment />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/help" element={<Help />} />
+            <Route path="/documentation" element={<Documentation />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/careers" element={<Careers />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
