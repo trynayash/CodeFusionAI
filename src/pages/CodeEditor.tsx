@@ -9,10 +9,15 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useTerminal } from '@/hooks/use-terminal';
 import { Header } from '@/components/ui/header';
+import { Terminal } from '@/components/ui/terminal';
+import { ApiTester } from '@/components/ui/api-tester';
+import { executionService } from '@/services/ExecutionService';
 
 // Import language icons
 import pythonIcon from '@/assets/languages/python.svg';
@@ -83,9 +88,13 @@ export default function CodeEditor() {
   const [snippets, setSnippets] = useState<CodeSnippet[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [activeTab, setActiveTab] = useState('output');
+  const [detectedEndpoints, setDetectedEndpoints] = useState<string[]>([]);
+  const [serverPort, setServerPort] = useState(3000);
   const { user, signOut, loading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const terminal = useTerminal();
 
   useEffect(() => {
     if (!user && !loading) {
@@ -134,23 +143,41 @@ export default function CodeEditor() {
     }
 
     setIsRunning(true);
+    terminal.setRunning(true);
+    terminal.clearLines();
+    terminal.addLine('🚀 Starting code execution...', 'info');
     
     try {
-      // Simulate code execution with advanced validation
-      const errors = validateCode(code, language);
+      // Use the ExecutionService for proper code execution
+      terminal.addLine(`📝 Executing ${language} code...`, 'info');
+      const result = await executionService.executeCode(code, language);
       
-      if (errors.length > 0) {
-        const errorMessage = errors.join('\n');
-        setOutput(`Compilation/Runtime Errors:\n${errorMessage}\n\nPlease fix these errors and try again.`);
-        toast({
-          title: "Code execution failed",
-          description: `${errors.length} error${errors.length > 1 ? 's' : ''} found in your code`,
-          variant: "destructive",
-        });
-      } else {
-        // Simulate successful execution with detailed output
-        const result = simulateCodeExecution(code, language);
-        setOutput(`Execution Output:\n${result}\n\nCode executed successfully!`);
+      if (result.success) {
+        setOutput(result.output);
+        terminal.addLine(`✅ Execution completed in ${result.executionTime}ms`, 'success');
+        terminal.addLine(result.output, 'output');
+        
+        // Handle different output types
+        if (result.hasWebOutput) {
+          terminal.addLine('🌐 Web application detected - redirecting to preview...', 'info');
+          setTimeout(() => {
+            navigate('/output');
+          }, 1500);
+        }
+        
+        if (result.hasApiEndpoints) {
+          terminal.addLine(`🔗 API endpoints detected on port ${result.serverPort}`, 'info');
+          setDetectedEndpoints(['API endpoints detected']);
+          setServerPort(result.serverPort || 3000);
+          setActiveTab('api');
+        }
+        
+        if (result.warnings && result.warnings.length > 0) {
+          result.warnings.forEach(warning => {
+            terminal.addLine(`⚠️ ${warning}`, 'warning');
+          });
+        }
+        
         toast({
           title: "Code executed successfully!",
           description: "Your code ran without errors.",
@@ -158,10 +185,19 @@ export default function CodeEditor() {
         
         // Save code to Supabase automatically
         await saveSnippet();
+      } else {
+        setOutput(result.error || 'Execution failed');
+        terminal.addLine(`❌ Execution failed: ${result.error}`, 'error');
+        toast({
+          title: "Code execution failed",
+          description: result.error || 'Unknown error occurred',
+          variant: "destructive",
+        });
       }
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : 'Unknown runtime error occurred';
-      setOutput(`Runtime Error:\n${errorMsg}\n\nThis error occurred during code execution.`);
+      setOutput(`Runtime Error: ${errorMsg}`);
+      terminal.addLine(`❌ Runtime Error: ${errorMsg}`, 'error');
       toast({
         title: "Runtime Error",
         description: `Execution failed: ${errorMsg}`,
@@ -169,181 +205,12 @@ export default function CodeEditor() {
       });
     }
     
-    setTimeout(() => {
-      setIsRunning(false);
-    }, 1000);
+    setIsRunning(false);
+    terminal.setRunning(false);
   };
 
-  const validateCode = (code: string, language: string): string[] => {
-    const errors: string[] = [];
-    
-    switch (language) {
-      case 'javascript':
-      case 'typescript':
-        // Check for common syntax errors
-        if (code.includes('undefined_function(')) {
-          errors.push('ReferenceError: undefined_function is not defined');
-        }
-        if (code.match(/\blet\s+\w+\s*;\s*\w+\s*=/)) {
-          errors.push('ReferenceError: Cannot access variable before initialization');
-        }
-        if (code.match(/\{[^}]*$/)) {
-          errors.push('SyntaxError: Unexpected end of input - missing closing brace');
-        }
-        if (code.match(/console\.log\([^)]*$/)) {
-          errors.push('SyntaxError: Missing closing parenthesis in console.log');
-        }
-        if (code.includes('funtion')) {
-          errors.push('SyntaxError: Unexpected token - did you mean "function"?');
-        }
-        break;
-        
-      case 'python':
-        if (code.includes('undefined_variable') && !code.includes('undefined_variable =')) {
-          errors.push("NameError: name 'undefined_variable' is not defined");
-        }
-        if (code.match(/print\([^)]*[^)]\s*$/m)) {
-          errors.push('SyntaxError: unexpected EOF while parsing - missing closing parenthesis');
-        }
-        if (code.match(/^\s*if\s+.*:\s*$/m) && !code.match(/^\s*if\s+.*:\s*\n\s+.+/m)) {
-          errors.push('IndentationError: expected an indented block after if statement');
-        }
-        if (code.includes('def ') && code.match(/def\s+\w+\([^)]*\):\s*$/m)) {
-          errors.push('IndentationError: expected an indented block after function definition');
-        }
-        break;
-        
-      case 'java':
-        if (!code.includes('public static void main') && !code.includes('class ')) {
-          errors.push('Error: Main method not found in class');
-        }
-        if (code.match(/System\.out\.println\([^)]*[^)]\s*$/m)) {
-          errors.push('Syntax error: missing closing parenthesis in println');
-        }
-        if (code.includes('public class') && !code.match(/public\s+class\s+\w+/)) {
-          errors.push('Syntax error: invalid class declaration');
-        }
-        if (code.match(/\{[^}]*$/)) {
-          errors.push('Syntax error: missing closing brace');
-        }
-        break;
-        
-      case 'cpp':
-        if (!code.includes('#include')) {
-          errors.push('Error: Missing include directives (e.g., #include <iostream>)');
-        }
-        if (!code.includes('main(')) {
-          errors.push('Error: Main function not found');
-        }
-        if (code.includes('cout') && !code.includes('#include <iostream>')) {
-          errors.push('Error: cout requires #include <iostream>');
-        }
-        if (code.match(/cout\s*<<\s*[^;]*$/m)) {
-          errors.push('Syntax error: missing semicolon after cout statement');
-        }
-        break;
-        
-      case 'c':
-        if (!code.includes('#include')) {
-          errors.push('Error: Missing include directives (e.g., #include <stdio.h>)');
-        }
-        if (!code.includes('main(')) {
-          errors.push('Error: Main function not found');
-        }
-        if (code.includes('printf') && !code.includes('#include <stdio.h>')) {
-          errors.push('Error: printf requires #include <stdio.h>');
-        }
-        if (code.match(/printf\([^)]*[^)]\s*$/m)) {
-          errors.push('Syntax error: missing closing parenthesis in printf');
-        }
-        break;
-    }
-    
-    // Common syntax checks for all languages
-    if (code.trim() === '') {
-      errors.push('Error: Empty code - please write some code to execute');
-    }
-    
-    // Check for unmatched parentheses
-    const openParens = (code.match(/\(/g) || []).length;
-    const closeParens = (code.match(/\)/g) || []).length;
-    if (openParens !== closeParens) {
-      errors.push('Syntax error: Unmatched parentheses detected');
-    }
-    
-    return errors;
-  };
-
-  const simulateCodeExecution = (code: string, language: string): string => {
-    switch (language) {
-      case 'javascript':
-        if (code.includes('console.log')) {
-          const matches = code.match(/console\.log\(([^)]+)\)/g);
-          if (matches) {
-            return matches.map(match => {
-              const content = match.replace(/console\.log\(|\)/g, '');
-              try {
-                return eval(content) || content.replace(/['"]/g, '');
-              } catch {
-                return content.replace(/['"]/g, '');
-              }
-            }).join('\n');
-          }
-        }
-        return 'JavaScript code executed successfully';
-      
-      case 'python':
-        if (code.includes('print(')) {
-          const matches = code.match(/print\(([^)]+)\)/g);
-          if (matches) {
-            return matches.map(match => {
-              const content = match.replace(/print\(|\)/g, '');
-              return content.replace(/['"]/g, '');
-            }).join('\n');
-          }
-        }
-        return 'Python code executed successfully';
-      
-      case 'java':
-        if (code.includes('System.out.println')) {
-          const matches = code.match(/System\.out\.println\(([^)]+)\)/g);
-          if (matches) {
-            return matches.map(match => {
-              const content = match.replace(/System\.out\.println\(|\)/g, '');
-              return content.replace(/['"]/g, '');
-            }).join('\n');
-          }
-        }
-        return 'Java code compiled and executed successfully';
-      
-      case 'cpp':
-        if (code.includes('cout')) {
-          const matches = code.match(/cout\s*<<\s*([^;]+);/g);
-          if (matches) {
-            return matches.map(match => {
-              const content = match.replace(/cout\s*<<\s*|;/g, '');
-              return content.replace(/['"]/g, '');
-            }).join('\n');
-          }
-        }
-        return 'C++ code compiled and executed successfully';
-      
-      case 'c':
-        if (code.includes('printf')) {
-          const matches = code.match(/printf\(([^)]+)\)/g);
-          if (matches) {
-            return matches.map(match => {
-              const content = match.replace(/printf\(|\)/g, '');
-              return content.replace(/['"]/g, '').replace(/%[sdif]/g, 'value');
-            }).join('\n');
-          }
-        }
-        return 'C code compiled and executed successfully';
-      
-      default:
-        return `${language} code executed successfully`;
-    }
-  };
+  // Remove the old validation functions since we now use ExecutionService
+  // The validateCode and simulateCodeExecution functions are no longer needed
 
   const saveSnippet = async () => {
     if (!user) return;
@@ -628,44 +495,62 @@ export default function CodeEditor() {
 
           {/* Output Panel */}
           <div className="w-full lg:w-1/3 border-t lg:border-t-0 lg:border-l border-border bg-card flex flex-col min-h-[300px] lg:min-h-0">
-            <div className="p-4 border-b border-border">
-              <h3 className="font-semibold flex items-center space-x-2">
-                <Play className="w-4 h-4 text-primary" />
-                <span>Output</span>
-                {output && (
-                  <div className={`w-2 h-2 rounded-full ${
-                    output.includes('Error') ? 'bg-destructive' : 'bg-success'
-                  }`}></div>
-                )}
-              </h3>
-            </div>
-            <ScrollArea className="flex-1 p-4">
-              <div className="space-y-2">
-                {output ? (
-                  <div className={`rounded-lg p-4 border ${
-                    output.includes('Error') 
-                      ? 'bg-destructive/10 border-destructive/20 text-destructive-foreground' 
-                      : 'bg-success/10 border-success/20 text-foreground'
-                  }`}>
-                    <pre className="text-sm whitespace-pre-wrap font-mono">
-                      {output}
-                    </pre>
-                  </div>
-                ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <Play className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                    <p className="text-sm mb-2">Click "Run Code" to see output here</p>
-                    <div className="text-xs space-y-1 max-w-xs mx-auto">
-                      <p>Tips:</p>
-                      <p>• Write valid syntax for your selected language</p>
-                      <p>• Check for missing imports or includes</p>
-                      <p>• Ensure proper indentation (Python)</p>
-                      <p>• Close all parentheses and braces</p>
-                    </div>
-                  </div>
-                )}
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col h-full">
+              <div className="p-4 border-b border-border">
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="output" className="text-xs">Output</TabsTrigger>
+                  <TabsTrigger value="terminal" className="text-xs">Terminal</TabsTrigger>
+                  <TabsTrigger value="api" className="text-xs">API</TabsTrigger>
+                </TabsList>
               </div>
-            </ScrollArea>
+              
+              <TabsContent value="output" className="flex-1 m-0">
+                <ScrollArea className="h-full p-4">
+                  <div className="space-y-2">
+                    {output ? (
+                      <div className={`rounded-lg p-4 border ${
+                        output.includes('Error') 
+                          ? 'bg-destructive/10 border-destructive/20 text-destructive-foreground' 
+                          : 'bg-success/10 border-success/20 text-foreground'
+                      }`}>
+                        <pre className="text-sm whitespace-pre-wrap font-mono">
+                          {output}
+                        </pre>
+                      </div>
+                    ) : (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <Play className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                        <p className="text-sm mb-2">Click "Run Code" to see output here</p>
+                        <div className="text-xs space-y-1 max-w-xs mx-auto">
+                          <p>Tips:</p>
+                          <p>• Write valid syntax for your selected language</p>
+                          <p>• Check for missing imports or includes</p>
+                          <p>• Ensure proper indentation (Python)</p>
+                          <p>• Close all parentheses and braces</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </ScrollArea>
+              </TabsContent>
+              
+              <TabsContent value="terminal" className="flex-1 m-0 p-4">
+                <Terminal
+                  lines={terminal.lines}
+                  isRunning={terminal.isRunning}
+                  onClear={terminal.clearLines}
+                  className="h-full border-0"
+                />
+              </TabsContent>
+              
+              <TabsContent value="api" className="flex-1 m-0 p-4">
+                <ApiTester
+                  serverPort={serverPort}
+                  detectedEndpoints={detectedEndpoints}
+                  className="h-full border-0"
+                />
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </div>
