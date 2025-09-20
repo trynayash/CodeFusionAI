@@ -8,91 +8,168 @@ import { Header } from '@/components/ui/header';
 import { Footer } from '@/components/ui/footer';
 import { Dashboard3D } from '@/components/ui/dashboard-3d';
 import { supabase } from '@/integrations/supabase/client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { UserStats, Activity, APIResponse } from '@/types/api';
+import { transformSupabaseResponse, handleAPIError, formatRelativeTime } from '@/utils/api';
+import { log } from '@/utils/logger';
+import { withErrorBoundary } from '@/components/ErrorBoundary';
 
-interface UserStats {
-  snippets: number;
-  projects: number;
-  totalHours: number;
-}
-
-interface Activity {
-  id: string;
-  title: string;
-  language: string;
-  created_at: string;
-  type: 'snippet' | 'project';
-}
-
-export default function Dashboard() {
+function Dashboard() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [stats, setStats] = useState<UserStats>({ snippets: 0, projects: 0, totalHours: 0 });
+  const [stats, setStats] = useState<UserStats>({ 
+    snippets: 0, 
+    projects: 0, 
+    totalHours: 0,
+    streak: 0,
+    level: 1,
+    xp: 0,
+    nextLevelXp: 1000,
+    linesOfCode: 0,
+    languagesUsed: []
+  });
   const [recentActivity, setRecentActivity] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const loadUserData = useCallback(async () => {
+    if (!user) {
+      log.warn('Attempted to load user data without authenticated user', undefined, 'DASHBOARD');
+      return;
+    }
+
+    const startTime = performance.now();
+    setLoading(true);
+    setError(null);
+
+    try {
+      log.info('Loading dashboard data', { userId: user.id }, 'DASHBOARD');
+
+      // Load snippets count with proper error handling
+      const snippetsResponse = await supabase
+        .from('code_snippets')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id);
+
+      const snippetsResult = transformSupabaseResponse(snippetsResponse, 'load snippets count');
+      if (!snippetsResult.success) {
+        throw new Error(snippetsResult.error);
+      }
+
+      // Load projects count with proper error handling
+      const projectsResponse = await supabase
+        .from('projects')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id);
+
+      const projectsResult = transformSupabaseResponse(projectsResponse, 'load projects count');
+      if (!projectsResult.success) {
+        throw new Error(projectsResult.error);
+      }
+
+      // Load recent snippets
+      const recentSnippetsResponse = await supabase
+        .from('code_snippets')
+        .select('id, title, language, created_at, updated_at, tags, status, description')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(3);
+
+      const recentSnippetsResult = transformSupabaseResponse(recentSnippetsResponse, 'load recent snippets');
+
+      // Load recent projects
+      const recentProjectsResponse = await supabase
+        .from('projects')
+        .select('id, title, language, created_at, updated_at, tags, status, description')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(3);
+
+      const recentProjectsResult = transformSupabaseResponse(recentProjectsResponse, 'load recent projects');
+
+      // Combine and sort activities with proper typing
+      const snippetsData = recentSnippetsResult.success ? recentSnippetsResult.data || [] : [];
+      const projectsData = recentProjectsResult.success ? recentProjectsResult.data || [] : [];
+
+      const activities: Activity[] = [
+        ...snippetsData.map(item => ({ 
+          ...item, 
+          type: 'snippet' as const,
+          tags: item.tags || [],
+          status: item.status || 'draft',
+          description: item.description || ''
+        })),
+        ...projectsData.map(item => ({ 
+          ...item, 
+          type: 'project' as const,
+          tags: item.tags || [],
+          status: item.status || 'active',
+          description: item.description || ''
+        }))
+      ].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()).slice(0, 4);
+
+      const snippetsCount = snippetsResponse.count || 0;
+      const projectsCount = projectsResponse.count || 0;
+      const totalItems = snippetsCount + projectsCount;
+      const estimatedHours = Math.floor(snippetsCount * 0.5 + projectsCount * 2.5);
+      const estimatedXp = totalItems * 50 + Math.floor(Math.random() * 500);
+      const level = Math.floor(estimatedXp / 1000) + 1;
+
+      const newStats: UserStats = {
+        snippets: snippetsCount,
+        projects: projectsCount,
+        totalHours: estimatedHours,
+        streak: Math.floor(Math.random() * 15) + 5, // Mock data - would come from actual tracking
+        level,
+        xp: estimatedXp,
+        nextLevelXp: level * 1000,
+        linesOfCode: totalItems * 50, // Estimated
+        languagesUsed: [...new Set(activities.map(a => a.language))], // Unique languages
+      };
+
+      setStats(newStats);
+      setRecentActivity(activities);
+
+      const endTime = performance.now();
+      log.perf('Dashboard data loaded', endTime - startTime, {
+        snippetsCount,
+        projectsCount,
+        activitiesCount: activities.length
+      });
+
+      log.user('Dashboard viewed', { 
+        stats: newStats,
+        activitiesCount: activities.length 
+      });
+
+    } catch (error) {
+      const appError = handleAPIError(error, 'loadUserData');
+      setError(appError.message);
+      log.error('Failed to load dashboard data', error as Error, 'DASHBOARD');
+    } finally {
+      setLoading(false);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (user) {
       loadUserData();
     }
-  }, [user]);
+  }, [user, loadUserData]);
 
-  const loadUserData = async () => {
-    setLoading(true);
-    try {
-      // Load snippets count
-      const { count: snippetsCount } = await supabase
-        .from('code_snippets')
-        .select('*', { count: 'exact', head: true });
+  const handleQuickAction = useCallback((action: string, path: string) => {
+    log.user(`Quick action clicked: ${action}`, { path });
+    navigate(path);
+  }, [navigate]);
 
-      // Load projects count
-      const { count: projectsCount } = await supabase
-        .from('projects')
-        .select('*', { count: 'exact', head: true });
-
-      // Load recent snippets
-      const { data: snippetsData } = await supabase
-        .from('code_snippets')
-        .select('id, title, language, created_at')
-        .order('created_at', { ascending: false })
-        .limit(3);
-
-      // Load recent projects
-      const { data: projectsData } = await supabase
-        .from('projects')
-        .select('id, title, language, created_at')
-        .order('created_at', { ascending: false })
-        .limit(3);
-
-      // Combine and sort activities
-      const activities: Activity[] = [
-        ...(snippetsData || []).map(item => ({ ...item, type: 'snippet' as const })),
-        ...(projectsData || []).map(item => ({ ...item, type: 'project' as const }))
-      ].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()).slice(0, 4);
-
-      setStats({
-        snippets: snippetsCount || 0,
-        projects: projectsCount || 0,
-        totalHours: Math.floor((snippetsCount || 0) * 0.5 + (projectsCount || 0) * 2.5) // Estimate
-      });
-      setRecentActivity(activities);
-    } catch (error) {
-      console.error('Error loading user data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const formatTimeAgo = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
-    if (diffInHours < 1) return 'Just now';
-    if (diffInHours < 24) return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
-    const diffInDays = Math.floor(diffInHours / 24);
-    return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
-  };
+  const handleActivityClick = useCallback((activity: Activity) => {
+    log.user('Activity item clicked', { 
+      activityId: activity.id, 
+      type: activity.type,
+      language: activity.language 
+    });
+    navigate('/editor');
+  }, [navigate]);
 
   const dashboardStats = [
     { 
@@ -242,14 +319,14 @@ export default function Dashboard() {
                 transition={{ duration: 0.6, delay: 0.1 * (index + 1) }}
                 className="group"
               >
-                <Card className="relative overflow-hidden bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl border border-white/20 hover:border-white/30 transition-all duration-300 hover:scale-105 card-3d">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${stat.bgColor} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
+                <Card className="relative overflow-hidden bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-xl border border-slate-700/50 hover:border-slate-600/50 transition-all duration-300 hover:scale-105 card-3d shadow-xl">
+                  <div className={`absolute inset-0 bg-gradient-to-br ${stat.bgColor} opacity-20 group-hover:opacity-30 transition-opacity duration-300`}></div>
                   
                   <CardContent className="p-6 relative z-10">
                     <div className="flex items-center justify-between">
                       <div className="space-y-2">
-                        <p className="text-white/70 text-sm font-medium">{stat.label}</p>
-                        <p className="text-3xl font-bold text-white">{stat.value}</p>
+                        <p className="text-slate-300 text-sm font-medium">{stat.label}</p>
+                        <p className="text-3xl font-bold text-white drop-shadow-sm">{stat.value}</p>
                       </div>
                       <div className={`p-3 rounded-xl ${stat.iconBg} shadow-lg`}>
                         <stat.icon className="h-6 w-6 text-white" />
@@ -339,7 +416,7 @@ export default function Dashboard() {
                           animate={{ opacity: 1, x: 0 }}
                           whileHover={{ scale: 1.02 }}
                           className="flex items-center justify-between p-4 rounded-lg bg-white/5 border border-white/10 hover:border-white/20 hover:bg-white/10 transition-all duration-300 cursor-pointer group"
-                          onClick={() => navigate('/editor')}
+                          onClick={() => handleActivityClick(activity)}
                         >
                           <div className="flex items-center space-x-3">
                             <div className="w-2 h-2 bg-accent rounded-full flex-shrink-0 group-hover:scale-150 transition-transform duration-300"></div>
@@ -351,7 +428,7 @@ export default function Dashboard() {
                             </div>
                           </div>
                           <span className="text-sm text-white/60 flex-shrink-0 ml-2">
-                            {formatTimeAgo(activity.created_at)}
+                            {formatRelativeTime(activity.created_at)}
                           </span>
                         </motion.div>
                       ))
@@ -428,3 +505,22 @@ export default function Dashboard() {
     </div>
   );
 }
+
+// Export with error boundary wrapper
+export default withErrorBoundary(Dashboard, {
+  fallback: (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
+      <div className="text-center text-white">
+        <h1 className="text-2xl font-bold mb-4">Dashboard Error</h1>
+        <p className="text-white/70 mb-6">Unable to load dashboard. Please try refreshing the page.</p>
+        <Button onClick={() => window.location.reload()}>
+          Refresh Page
+        </Button>
+      </div>
+    </div>
+  ),
+  onError: (error, errorInfo) => {
+    log.error('Dashboard component error', error, 'DASHBOARD_ERROR_BOUNDARY');
+    log.error('Error info', errorInfo, 'DASHBOARD_ERROR_BOUNDARY');
+  }
+});

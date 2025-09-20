@@ -75,7 +75,7 @@ export default function About() {
     { year: '2021', title: '10K Students', description: 'Reached our first major milestone with innovative course design' },
     { year: '2022', title: 'AI Integration', description: 'Launched our AI-powered coding assistant and personalized learning' },
     { year: '2023', title: '100K Students', description: 'Expanded globally with enterprise partnerships and advanced features' },
-    { year: '2024', title: 'Market Leader', description: 'Became the leading platform for AI-enhanced programming education' }
+    { year: '2025', title: 'Market Leader', description: 'Became the leading platform for AI-enhanced programming education' }
   ];
 
   return (

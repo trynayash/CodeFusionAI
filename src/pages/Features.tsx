@@ -6,6 +6,15 @@ import { Header } from '@/components/ui/header';
 import { Footer } from '@/components/ui/footer';
 import { useNavigate } from 'react-router-dom';
 
+// Import programming language logos from All_logo_and_pictures-main
+import pythonLogo from '@/assets/All_logo_and_pictures-main/programming languages/python.svg';
+import javascriptLogo from '@/assets/All_logo_and_pictures-main/programming languages/javascript.svg';
+import typescriptLogo from '@/assets/All_logo_and_pictures-main/programming languages/typescript.svg';
+import javaLogo from '@/assets/All_logo_and_pictures-main/programming languages/java.svg';
+import cppLogo from '@/assets/All_logo_and_pictures-main/programming languages/c++.svg';
+import cLogo from '@/assets/All_logo_and_pictures-main/programming languages/c.svg';
+import reactLogo from '@/assets/All_logo_and_pictures-main/frameworks/react.svg';
+
 export default function Features() {
   const navigate = useNavigate();
 
@@ -55,14 +64,18 @@ export default function Features() {
   ];
 
   const codeLanguages = [
-    { name: 'Python', icon: '🐍', popularity: 95 },
-    { name: 'JavaScript', icon: '⚡', popularity: 90 },
-    { name: 'TypeScript', icon: '📘', popularity: 85 },
-    { name: 'Java', icon: '☕', popularity: 80 },
-    { name: 'C++', icon: '⚙️', popularity: 75 },
-    { name: 'C', icon: '🔧', popularity: 70 },
-    { name: 'Go', icon: '🚀', popularity: 65 },
-    { name: 'Rust', icon: '🦀', popularity: 60 }
+    { name: 'Python', logo: pythonLogo, popularity: 95, color: 'from-blue-500 to-yellow-500', description: 'Versatile & beginner-friendly' },
+    { name: 'JavaScript', logo: javascriptLogo, popularity: 90, color: 'from-yellow-400 to-yellow-600', description: 'Web development essential' },
+    { name: 'TypeScript', logo: typescriptLogo, popularity: 85, color: 'from-blue-600 to-blue-800', description: 'JavaScript with types' },
+    { name: 'Java', logo: javaLogo, popularity: 80, color: 'from-red-500 to-orange-600', description: 'Enterprise & Android' },
+    { name: 'C++', logo: cppLogo, popularity: 75, color: 'from-blue-700 to-purple-700', description: 'System programming' },
+    { name: 'C', logo: cLogo, popularity: 70, color: 'from-gray-600 to-blue-600', description: 'Low-level programming' },
+    { name: 'React', logo: reactLogo, popularity: 88, color: 'from-cyan-400 to-blue-500', description: 'UI library for web' },
+    { name: 'Go', icon: '🚀', popularity: 68, color: 'from-cyan-500 to-blue-600', description: 'Fast & concurrent' },
+    { name: 'Rust', icon: '🦀', popularity: 65, color: 'from-orange-600 to-red-600', description: 'Memory-safe systems' },
+    { name: 'PHP', icon: '🐘', popularity: 72, color: 'from-purple-600 to-indigo-600', description: 'Web backend language' },
+    { name: 'Swift', icon: '🍎', popularity: 62, color: 'from-orange-500 to-red-500', description: 'iOS development' },
+    { name: 'Kotlin', icon: '📱', popularity: 58, color: 'from-purple-500 to-pink-500', description: 'Modern Android dev' }
   ];
 
   return (
@@ -175,7 +188,7 @@ export default function Features() {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {codeLanguages.map((lang, index) => (
                 <motion.div
                   key={lang.name}
@@ -183,16 +196,33 @@ export default function Features() {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, delay: 0.1 * index }}
                 >
-                  <Card className="glass text-center p-6 glow-hover">
-                    <div className="text-4xl mb-3">{lang.icon}</div>
-                    <h3 className="font-semibold mb-2">{lang.name}</h3>
-                    <div className="w-full bg-muted rounded-full h-2 mb-2">
+                  <Card className="glass text-center p-6 glow-hover group hover:scale-105 transition-all duration-300 h-full">
+                    <div className="mb-4 flex justify-center">
+                      {lang.logo ? (
+                        <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${lang.color} p-3 flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300`}>
+                          <img 
+                            src={lang.logo} 
+                            alt={`${lang.name} logo`}
+                            className="w-full h-full object-contain filter brightness-0 invert"
+                          />
+                        </div>
+                      ) : (
+                        <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${lang.color} flex items-center justify-center text-2xl shadow-lg group-hover:shadow-xl transition-all duration-300`}>
+                          {lang.icon}
+                        </div>
+                      )}
+                    </div>
+                    <h3 className="font-semibold mb-2 text-lg">{lang.name}</h3>
+                    <p className="text-xs text-muted-foreground mb-3 min-h-[2.5rem] flex items-center justify-center">
+                      {lang.description}
+                    </p>
+                    <div className="w-full bg-muted rounded-full h-2 mb-2 overflow-hidden">
                       <div
-                        className="bg-gradient-primary h-2 rounded-full transition-all duration-1000"
+                        className={`bg-gradient-to-r ${lang.color} h-2 rounded-full transition-all duration-1000 ease-out`}
                         style={{ width: `${lang.popularity}%` }}
                       ></div>
                     </div>
-                    <span className="text-sm text-muted-foreground">{lang.popularity}% Popular</span>
+                    <span className="text-sm text-muted-foreground font-medium">{lang.popularity}% Popular</span>
                   </Card>
                 </motion.div>
               ))}
