@@ -7,7 +7,7 @@ const testimonials = [
     name: "Sarah Chen",
     role: "Software Engineer at Google",
     avatar: "/api/placeholder/100/100",
-    content: "CodeFusion AI completely transformed my learning experience. The AI assistant helped me understand complex algorithms in ways no other platform could. I landed my dream job at Google after completing their DSA course!",
+    content: "CodeFusionAI completely transformed my learning experience. The AI assistant helped me understand complex algorithms in ways no other platform could. I landed my dream job at Google after completing their DSA course!",
     rating: 5,
     course: "Data Structures & Algorithms"
   },
@@ -31,7 +31,7 @@ const testimonials = [
     name: "Alex Thompson",
     role: "Frontend Developer",
     avatar: "/api/placeholder/100/100",
-    content: "I've tried many coding platforms, but CodeFusion AI's personalized approach is unmatched. The AI doesn't just give answers—it teaches you to think like a programmer.",
+    content: "I've tried many coding platforms, but CodeFusionAI's personalized approach is unmatched. The AI doesn't just give answers—it teaches you to think like a programmer.",
     rating: 5,
     course: "Web Development Foundations"
   },
@@ -63,7 +63,7 @@ export function TestimonialsSection() {
             Success Stories from <span className="gradient-text">Our Learners</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Join thousands of developers who transformed their careers with CodeFusion AI. Here's what they have to say about their journey.
+            Join thousands of developers who transformed their careers with CodeFusionAI. Here's what they have to say about their journey.
           </p>
         </div>
 

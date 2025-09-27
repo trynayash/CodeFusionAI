@@ -15,7 +15,7 @@ import { MagicLinkModal } from '@/components/auth/MagicLinkModal';
 import { AuthButtonGroup } from '@/components/auth/AuthButtonGroup';
 import { FeatureCard } from '@/components/auth/FeatureCard';
 import { HighlightCard } from '@/components/auth/HighlightCard';
-import logoSvg from '@/assets/logo-cool.png';
+import CodeFusionLogo from '@/components/CodeFusionLogo';
 
 interface SignUpForm {
   fullName: string;
@@ -167,12 +167,8 @@ export default function Auth() {
           {/* Logo and Brand */}
           <div className="flex items-center justify-center mb-8">
             <div className="flex items-center space-x-4">
-              <div className="relative">
-                <img src={logoSvg} alt="CodeFusion AI" className="w-16 h-16 rounded-2xl shadow-lg" />
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl"></div>
-              </div>
+              <CodeFusionLogo size="xl" animated={true} showText={true} />
               <div>
-                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">CodeFusion AI</h1>
                 <p className="text-slate-600 dark:text-slate-400 font-medium">Code smarter. Learn faster.</p>
               </div>
             </div>
@@ -291,12 +287,8 @@ export default function Auth() {
             {/* Mobile Logo - Only show on mobile */}
             <div className="flex lg:hidden items-center justify-center mb-8">
               <div className="flex items-center space-x-3">
-                <div className="relative">
-                  <img src={logoSvg} alt="CodeFusion AI" className="w-12 h-12 rounded-xl shadow-lg" />
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl"></div>
-                </div>
+                <CodeFusionLogo size="lg" animated={true} showText={true} />
                 <div>
-                  <h1 className="text-2xl font-bold text-slate-900 dark:text-white">CodeFusion AI</h1>
                   <p className="text-slate-600 dark:text-slate-400 text-sm">Code smarter. Learn faster.</p>
                 </div>
               </div>

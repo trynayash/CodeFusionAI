@@ -17,6 +17,25 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { paymentService } from '@/services/PaymentService';
 import { coursesData, learningPaths, categories, levels, sortOptions } from '@/data/coursesData';
+import { useSingleIconScoutAsset } from '@/hooks/useIconScoutAssets';
+
+function Course3DIcon({ title, category, fallback }: { title: string; category: string; fallback: React.ReactNode }) {
+  // Try to fetch a 3D icon related to the course title; fall back to category if needed
+  const query = `${title} 3d`; // IconScout query
+  const { asset } = useSingleIconScoutAsset('3d-icons', query, { style: '3d' });
+
+  if (asset?.preview_url || asset?.url) {
+    return (
+      <img
+        src={asset.preview_url || asset.url}
+        alt={title}
+        className="w-16 h-16 object-contain"
+        loading="lazy"
+      />
+    );
+  }
+  return <span className="text-5xl">{fallback}</span>;
+}
 
 export default function Courses() {
   const navigate = useNavigate();
@@ -62,7 +81,7 @@ export default function Courses() {
 
     // Check if already enrolled
     if (enrolledCourses.includes(courseId)) {
-      navigate(`/course/${courseId}`);
+      navigate(`/course/${courseId}/learn`);
       return;
     }
 
@@ -70,49 +89,26 @@ export default function Courses() {
 
     try {
       if (course.price === 0) {
-        // Free course enrollment
+        // Require OTP verification for free Web courses (category Web Development)
+        if (course.category === 'Web Development') {
+          navigate(`/verify?courseId=${courseId}&next=/course/${courseId}/learn`);
+          return;
+        }
         const result = await paymentService.processPayment(course, {
           name: user.user_metadata?.full_name || user.email || '',
           email: user.email || '',
           phone: user.user_metadata?.phone || ''
         });
-
         if (result.success) {
-          toast({
-            title: "Enrollment Successful!",
-            description: `You have been enrolled in ${course.title}`,
-          });
+          toast({ title: "Enrollment Successful!", description: `You have been enrolled in ${course.title}` });
           setEnrolledCourses([...enrolledCourses, courseId]);
-          navigate(`/course/${courseId}`);
+          navigate(`/course/${courseId}/learn`);
         } else {
-          toast({
-            title: "Enrollment Failed",
-            description: result.error || "Something went wrong",
-            variant: "destructive",
-          });
+          toast({ title: "Enrollment Failed", description: result.error || "Something went wrong", variant: "destructive" });
         }
       } else {
-        // Paid course - redirect to payment
-        const result = await paymentService.processPayment(course, {
-          name: user.user_metadata?.full_name || user.email || '',
-          email: user.email || '',
-          phone: user.user_metadata?.phone || ''
-        });
-
-        if (result.success) {
-          toast({
-            title: "Payment Successful!",
-            description: `Welcome to ${course.title}!`,
-          });
-          setEnrolledCourses([...enrolledCourses, courseId]);
-          navigate(`/course/${courseId}`);
-        } else {
-          toast({
-            title: "Payment Failed",
-            description: result.error || "Payment was not completed",
-            variant: "destructive",
-          });
-        }
+        // Paid: go to checkout page first (Curtains-inspired course flow)
+        navigate(`/course/${courseId}/checkout`);
       }
     } catch (error) {
       toast({
@@ -423,10 +419,8 @@ export default function Courses() {
                         </div>
                       )}
                       
-                      <div className={viewMode === 'list' ? 'flex-shrink-0 w-32 h-32 p-4 flex items-center justify-center' : ''}>
-                        <div className={`text-6xl ${viewMode === 'list' ? '' : 'mb-4'} group-hover:scale-110 transition-transform duration-300`}>
-                          {course.image}
-                        </div>
+                      <div className={viewMode === 'list' ? 'flex-shrink-0 w-32 h-32 p-4 flex items-center justify-center' : 'mb-4 flex items-center justify-center'}>
+                        <Course3DIcon title={course.title} category={course.category} fallback={course.image} />
                       </div>
 
                       <div className="flex-1">

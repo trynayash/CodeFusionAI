@@ -501,7 +501,7 @@ function Dashboard() {
         </div>
       </main>
 
-      <Footer />
+      <Footer brandSize="md" />
     </div>
   );
 }

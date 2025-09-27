@@ -70,32 +70,29 @@ export default function CourseDetail() {
     setLoading(true);
 
     try {
-      const result = await paymentService.processPayment(course, {
-        name: user.user_metadata?.full_name || user.email || '',
-        email: user.email || '',
-        phone: user.user_metadata?.phone || ''
-      });
-
-      if (result.success) {
-        toast({
-          title: course.price === 0 ? "Enrollment Successful!" : "Payment Successful!",
-          description: `Welcome to ${course.title}!`,
+      if (course.price === 0) {
+        if (course.category === 'Web Development') {
+          navigate(`/verify?courseId=${courseId}&next=/course/${courseId}/learn`);
+          return;
+        }
+        const result = await paymentService.processPayment(course, {
+          name: user.user_metadata?.full_name || user.email || '',
+          email: user.email || '',
+          phone: user.user_metadata?.phone || ''
         });
-        setIsEnrolled(true);
-        navigate(`/course/${courseId}/learn`);
+        if (result.success) {
+          toast({ title: "Enrollment Successful!", description: `Welcome to ${course.title}!` });
+          setIsEnrolled(true);
+          navigate(`/course/${courseId}/learn`);
+        } else {
+          toast({ title: "Enrollment Failed", description: result.error || "Something went wrong", variant: "destructive" });
+        }
       } else {
-        toast({
-          title: course.price === 0 ? "Enrollment Failed" : "Payment Failed",
-          description: result.error || "Something went wrong",
-          variant: "destructive",
-        });
+        // Paid -> go to checkout page
+        navigate(`/course/${courseId}/checkout`);
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Something went wrong. Please try again.",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: "Something went wrong. Please try again.", variant: "destructive" });
     } finally {
       setLoading(false);
     }

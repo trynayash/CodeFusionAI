@@ -48,7 +48,7 @@ export default function AboutUs() {
               </div>
               <h1 className="text-4xl sm:text-6xl font-bold mb-6">
                 About
-                <span className="gradient-text block">CodeFusion AI</span>
+                <span className="brand-text block">CodeFusionAI</span>
               </h1>
               <p className="text-xl text-white/80 mb-8 max-w-3xl mx-auto">
                 We're on a mission to democratize coding education and empower developers worldwide with AI-powered learning tools.

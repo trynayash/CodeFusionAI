@@ -7,12 +7,13 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
+import CodeFusionLogo from '@/components/CodeFusionLogo';
 
 const helpCategories = [
   {
     icon: Zap,
     title: "Getting Started",
-    description: "Learn the basics of CodeFusion AI",
+    description: "Learn the basics of CodeFusionAI",
     articles: 12,
     color: "from-blue-500 to-cyan-500"
   },
@@ -40,7 +41,7 @@ const helpCategories = [
 ];
 
 const popularArticles = [
-  "How to get started with CodeFusion AI",
+  "How to get started with CodeFusionAI",
   "Setting up your development environment",
   "Understanding the AI code suggestions",
   "Managing your learning progress",
@@ -100,10 +101,10 @@ export default function Help() {
             </div>
             
             <h1 className="text-4xl md:text-6xl font-bold gradient-text mb-6">
-              Help Center
+              <span className="brand-text">Help Center</span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-12">
-              Find answers to your questions and get the most out of CodeFusion AI
+              Find answers to your questions and get the most out of CodeFusionAI
             </p>
 
             {/* Search Bar */}

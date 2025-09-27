@@ -5,7 +5,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState, useEffect, Suspense, lazy } from "react";
-import { LoadingScreen, PageLoadingSpinner } from "@/components/ui/loading-screen";
+import { PageLoadingSpinner } from "@/components/ui/loading-screen";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { ThemeProvider } from "@/contexts/ThemeContext";
@@ -27,7 +27,13 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Features = lazy(() => import("./pages/Features"));
 const Courses = lazy(() => import("./pages/Courses"));
 const CourseDetail = lazy(() => import("./pages/CourseDetail"));
+const CourseCheckout = lazy(() => import("./pages/CourseCheckout"));
 const CourseLearning = lazy(() => import("./pages/CourseLearning"));
+const PhonePeCallback = lazy(() => import("./pages/PhonePeCallback"));
+const OTPVerification = lazy(() => import("./pages/OTPVerification"));
+const CourseCertificate = lazy(() => import("./pages/CourseCertificate"));
+const LearningPath = lazy(() => import("./pages/LearningPath"));
+const VerifyCertificate = lazy(() => import("./pages/VerifyCertificate"));
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -97,11 +103,17 @@ function AppRoutes() {
           <Route path="/features" element={<Features />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/course/:courseId" element={<CourseDetail />} />
+          <Route path="/course/:courseId/checkout" element={<CourseCheckout />} />
           <Route path="/course/:courseId/learn" element={
             <ProtectedRoute>
               <CourseLearning />
             </ProtectedRoute>
           } />
+          <Route path="/learning-path/:pathId" element={<LearningPath />} />
+          <Route path="/verify-certificate" element={<VerifyCertificate />} />
+          <Route path="/phonepe/callback" element={<PhonePeCallback />} />
+          <Route path="/verify" element={<OTPVerification />} />
+          <Route path="/course/:courseId/certificate" element={<CourseCertificate />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/ai-assistant" element={<AIAssistant />} />
@@ -124,11 +136,9 @@ function AppRoutes() {
 }
 
 const App = () => {
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
-
   useEffect(() => {
     // Initialize logger
-    log.info('CodeFusion AI application starting', {
+    log.info('CodeFusionAI application starting', {
       version: '1.0.0',
       environment: process.env.NODE_ENV,
       timestamp: new Date().toISOString()
@@ -138,18 +148,8 @@ const App = () => {
     initializeSecurity();
     initializePerformance();
 
-    // Simulate initial app loading
-    const timer = setTimeout(() => {
-      setIsInitialLoading(false);
-      log.info('Application initialization complete');
-    }, 2000);
-
-    return () => clearTimeout(timer);
+    log.info('Application initialization complete');
   }, []);
-
-  if (isInitialLoading) {
-    return <LoadingScreen message="Initializing CodeFusion AI..." />;
-  }
 
   return (
     <ErrorBoundary

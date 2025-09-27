@@ -13,7 +13,7 @@ export default function Documentation() {
     {
       icon: <Cpu className="w-8 h-8 text-primary" />,
       title: "Getting Started",
-      description: "Quick setup guide and first steps with CodeFusion AI",
+      description: "Quick setup guide and first steps with CodeFusionAI",
       links: ["Installation", "Basic Setup", "First Project"]
     },
     {
@@ -60,7 +60,7 @@ export default function Documentation() {
                 <span className="gradient-text block">Documentation</span>
               </h1>
               <p className="text-xl text-white/80 mb-8 max-w-3xl mx-auto">
-                Everything you need to know to build amazing applications with CodeFusion AI.
+                Everything you need to know to build amazing applications with CodeFusionAI.
               </p>
             </motion.div>
           </div>

@@ -62,7 +62,7 @@ class OpenRouterService {
           'Authorization': `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
           'HTTP-Referer': window.location.origin,
-          'X-Title': 'CodeFusion AI Editor'
+          'X-Title': 'CodeFusionAI Editor'
         },
         body: JSON.stringify({
           model,
@@ -875,7 +875,7 @@ Rules:
             'Authorization': `Bearer ${this.apiKey}`,
             'Content-Type': 'application/json',
             'HTTP-Referer': window.location.origin,
-            'X-Title': 'CodeFusion AI Editor'
+            'X-Title': 'CodeFusionAI Editor'
           },
           body: JSON.stringify({
             model,

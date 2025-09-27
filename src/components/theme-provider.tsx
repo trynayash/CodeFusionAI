@@ -1,7 +1,7 @@
 /**
  * Dark Theme Provider (Fixed Dark Mode)
  * 
- * CodeFusion AI is locked to dark theme for the optimal coding experience!
+ * CodeFusionAI is locked to dark theme for the optimal coding experience!
  * Features:
  * - Permanent dark mode (no theme switching)
  * - Optimized dark color palette
@@ -89,7 +89,7 @@ export function ThemeProvider({
     // Clear any old theme preferences and set to dark
     localStorage.setItem(storageKey, 'dark');
     
-    log.info('🌙 CodeFusion AI locked to dark theme for the best coding experience!', undefined, 'THEME');
+    log.info('🌙 CodeFusionAI locked to dark theme for the best coding experience!', undefined, 'THEME');
   }, [storageKey]);
 
   const value: ThemeProviderState = {
@@ -97,17 +97,17 @@ export function ThemeProvider({
     actualTheme: 'dark',
     setTheme: () => {
       // No-op: theme is permanently locked to dark
-      log.debug('Theme change attempted but CodeFusion AI is locked to dark mode for optimal experience', undefined, 'THEME');
+      log.debug('Theme change attempted but CodeFusionAI is locked to dark mode for optimal experience', undefined, 'THEME');
     },
     toggleTheme: () => {
       // No-op: theme is permanently locked to dark
-      log.debug('Theme toggle attempted but CodeFusion AI is locked to dark mode for optimal experience', undefined, 'THEME');
+      log.debug('Theme toggle attempted but CodeFusionAI is locked to dark mode for optimal experience', undefined, 'THEME');
     },
     isSystemTheme: false,
     themeColors: darkThemeColors,
     setCustomColors: () => {
       // No-op: colors are optimized for dark theme
-      log.debug('Custom colors attempted but CodeFusion AI uses optimized dark theme colors', undefined, 'THEME');
+      log.debug('Custom colors attempted but CodeFusionAI uses optimized dark theme colors', undefined, 'THEME');
     },
   };
 
@@ -128,6 +128,6 @@ export const useTheme = () => {
   return context;
 };
 
-// ThemeToggle component removed - CodeFusion AI is permanently dark themed!
+// ThemeToggle component removed - CodeFusionAI is permanently dark themed!
 // This ensures no theme switching UI appears anywhere in the app
 // The dark theme provides the best coding experience! 🌙✨

@@ -84,7 +84,7 @@ export function AIAssistantSection() {
                     <Brain className="h-5 w-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">CodeFusion AI Assistant</h3>
+                    <h3 className="font-semibold brand-text">CodeFusionAI Assistant</h3>
                     <p className="text-xs text-muted-foreground">Online • Ready to help</p>
                   </div>
                 </div>

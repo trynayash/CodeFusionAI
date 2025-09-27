@@ -18,7 +18,7 @@ export interface Course {
   instructorImage: string;
   curriculum: {
     module: string;
-    lessons: string[];
+    lessons: (string | { title: string; url?: string; videoId?: string; videoUrl?: string })[];
     duration: string;
   }[];
   prerequisites: string[];
@@ -52,10 +52,12 @@ export interface EnrollmentData {
 
 class PaymentService {
   private razorpayKey: string;
+  private phonePeEndpoint: string;
 
   constructor() {
     // In production, store this in environment variables
     this.razorpayKey = 'rzp_test_your_key_here'; // Replace with actual Razorpay key
+    this.phonePeEndpoint = '/api/phonepe/start'; // Your backend endpoint that creates a PhonePe link
   }
 
   // Load Razorpay script dynamically
@@ -130,7 +132,7 @@ class PaymentService {
         key: this.razorpayKey,
         amount: order.amount,
         currency: order.currency,
-        name: 'CodeFusion AI',
+        name: 'CodeFusionAI',
         description: `Enrollment for ${course.title}`,
         order_id: order.id,
         prefill: {
@@ -181,6 +183,33 @@ class PaymentService {
     }
   }
 
+  // Start PhonePe payment by redirecting to your backend-created URL
+  async startPhonePePayment(params: {
+    amountInINR: number;
+    courseId: string;
+    courseTitle: string;
+    userName: string;
+    userEmail: string;
+  }): Promise<void> {
+    const response = await fetch(this.phonePeEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params),
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(text || 'Failed to initialize PhonePe payment');
+    }
+
+    const data = await response.json();
+    // Expecting { redirectUrl: string }
+    if (!data?.redirectUrl) {
+      throw new Error('PhonePe redirect URL not received');
+    }
+    window.location.href = data.redirectUrl;
+  }
+
   // Enroll in free course
   private async enrollInFreeCourse(courseId: string): Promise<PaymentResult> {
     try {
@@ -211,36 +240,19 @@ class PaymentService {
     }
   }
 
-  // Verify payment on backend
+  // Verify payment (client-side placeholder). In production, do server verification
   private async verifyPayment(paymentResponse: any, courseId: string): Promise<void> {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
-        throw new Error('User not authenticated');
-      }
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      throw new Error('User not authenticated');
+    }
 
-      // In production, verify payment signature on backend
-      const enrollmentData: EnrollmentData = {
-        userId: user.id,
-        courseId,
-        paymentId: paymentResponse.razorpay_payment_id,
-        orderId: paymentResponse.razorpay_order_id,
-        amount: paymentResponse.amount / 100, // Convert from paise to rupees
-        enrolledAt: new Date().toISOString(),
-        status: 'enrolled',
-      };
-
-      const { error } = await supabase
-        .from('enrollments')
-        .insert(enrollmentData);
-
-      if (error) {
-        throw error;
-      }
-    } catch (error) {
-      console.error('Payment verification error:', error);
-      throw error;
+    // Store simple enrollment flag in localStorage
+    const enrollments = JSON.parse(localStorage.getItem('user_enrollments') || '[]');
+    const enrollmentKey = `${user.id}_${courseId}`;
+    if (!enrollments.includes(enrollmentKey)) {
+      enrollments.push(enrollmentKey);
+      localStorage.setItem('user_enrollments', JSON.stringify(enrollments));
     }
   }
 
@@ -282,6 +294,18 @@ class PaymentService {
     } catch (error) {
       console.error('Get enrollments error:', error);
       return [];
+    }
+  }
+
+  // Mark enrolled locally (for PhonePe callback success)
+  async markEnrolled(courseId: string): Promise<void> {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    const enrollments = JSON.parse(localStorage.getItem('user_enrollments') || '[]');
+    const enrollmentKey = `${user.id}_${courseId}`;
+    if (!enrollments.includes(enrollmentKey)) {
+      enrollments.push(enrollmentKey);
+      localStorage.setItem('user_enrollments', JSON.stringify(enrollments));
     }
   }
 }

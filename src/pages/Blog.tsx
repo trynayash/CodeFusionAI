@@ -6,6 +6,7 @@ import { Footer } from '@/components/ui/footer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
+import CodeFusionLogo from '@/components/CodeFusionLogo';
 
 const blogPosts = [
   {
@@ -268,7 +269,7 @@ Based on the header navigation, these pages need to be created:
               Developer Blog
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Insights, tutorials, and thought leadership from the CodeFusion AI community
+              Insights, tutorials, and thought leadership from the CodeFusionAI community
             </p>
           </motion.div>
         </div>

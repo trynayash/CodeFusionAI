@@ -15,6 +15,7 @@ import { Progress } from '@/components/ui/progress';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { paymentService } from '@/services/PaymentService';
+import { progressService } from '@/services/ProgressService';
 import { coursesData } from '@/data/coursesData';
 
 export default function CourseLearning() {
@@ -54,29 +55,28 @@ export default function CourseLearning() {
     }
   };
 
-  const loadProgress = () => {
+  const loadProgress = async () => {
     if (user && courseId) {
-      const progressKey = `course_progress_${user.id}_${courseId}`;
-      const savedProgress = localStorage.getItem(progressKey);
-      if (savedProgress) {
-        const { completed, currentMod, currentLes, prog } = JSON.parse(savedProgress);
-        setCompletedLessons(completed || []);
-        setCurrentModule(currentMod || 0);
-        setCurrentLesson(currentLes || 0);
-        setProgress(prog || 0);
+      const rec = await progressService.load(user.id, courseId);
+      if (rec) {
+        setCompletedLessons(rec.completed_lessons || []);
+        setCurrentModule(rec.current_module || 0);
+        setCurrentLesson(rec.current_lesson || 0);
+        setProgress(rec.progress || 0);
       }
     }
   };
 
-  const saveProgress = (completed: string[], currentMod: number, currentLes: number, prog: number) => {
+  const saveProgress = async (completed: string[], currentMod: number, currentLes: number, prog: number) => {
     if (user && courseId) {
-      const progressKey = `course_progress_${user.id}_${courseId}`;
-      localStorage.setItem(progressKey, JSON.stringify({
-        completed,
-        currentMod: currentMod,
-        currentLes: currentLes,
-        prog
-      }));
+      await progressService.save(user.id, courseId, {
+        user_id: user.id,
+        course_id: courseId,
+        completed_lessons: completed,
+        current_module: currentMod,
+        current_lesson: currentLes,
+        progress: prog,
+      });
     }
   };
 
@@ -108,19 +108,45 @@ export default function CourseLearning() {
     if (!course || !course.curriculum[currentModule]) return null;
     
     const module = course.curriculum[currentModule];
-    const lesson = module.lessons[currentLesson];
+    const rawLesson = module.lessons[currentLesson];
+    const lesson = typeof rawLesson === 'string' ? { title: rawLesson } : rawLesson;
     
     return {
       moduleTitle: module.module,
-      lessonTitle: lesson,
+      lessonTitle: lesson.title || String(lesson),
       content: generateLessonContent(lesson, currentModule, currentLesson)
     };
   };
 
-  const generateLessonContent = (lessonTitle: string, moduleIndex: number, lessonIndex: number) => {
+  const toYouTubeEmbedUrl = (input?: string): string => {
+    if (!input) return '';
+    // If full YouTube URL, extract ID
+    try {
+      const url = new URL(input);
+      if (url.hostname.includes('youtube.com')) {
+        const vid = url.searchParams.get('v');
+        if (vid) return `https://www.youtube.com/embed/${vid}`;
+      }
+      if (url.hostname === 'youtu.be') {
+        const id = url.pathname.replace('/', '');
+        if (id) return `https://www.youtube.com/embed/${id}`;
+      }
+    } catch {}
+    // Assume it's already an embed or id
+    if (input.startsWith('http')) return input;
+    return `https://www.youtube.com/embed/${input}`;
+  };
+
+  const generateLessonContent = (lessonObj: any, moduleIndex: number, lessonIndex: number) => {
     // This would normally come from a database or CMS
+    const lessonTitle = typeof lessonObj === 'string' ? lessonObj : (lessonObj.title || 'Lesson');
+    const externalUrl = typeof lessonObj === 'object' ? lessonObj.url : undefined;
+    const videoId = typeof lessonObj === 'object' ? (lessonObj.videoId || undefined) : undefined;
+    const videoUrl = typeof lessonObj === 'object' ? (lessonObj.videoUrl || undefined) : undefined;
+    const videoEmbedUrl = videoId ? toYouTubeEmbedUrl(videoId) : toYouTubeEmbedUrl(videoUrl);
     return {
-      video: `https://www.youtube.com/embed/dQw4w9WgXcQ`, // Placeholder video
+      video: videoEmbedUrl || (externalUrl ? '' : `https://www.youtube.com/embed/dQw4w9WgXcQ`),
+      externalUrl,
       description: `In this lesson, you'll learn about ${lessonTitle}. This comprehensive guide will walk you through the concepts step by step with practical examples and hands-on exercises.`,
       objectives: [
         `Understand the fundamentals of ${lessonTitle}`,
@@ -289,15 +315,26 @@ export default function CourseLearning() {
           <div className="max-w-4xl mx-auto space-y-6">
             {/* Video Player */}
             <Card>
-              <CardContent className="p-0">
-                <div className="aspect-video bg-slate-900 rounded-lg overflow-hidden">
-                  <iframe
-                    src={currentLessonContent?.content.video}
-                    className="w-full h-full"
-                    allowFullScreen
-                    title={currentLessonContent?.lessonTitle}
-                  />
-                </div>
+              <CardContent className="p-6">
+                {currentLessonContent?.content.video ? (
+                  <div className="aspect-video bg-slate-900 rounded-lg overflow-hidden">
+                    <iframe
+                      src={currentLessonContent?.content.video}
+                      className="w-full h-full"
+                      allowFullScreen
+                      title={currentLessonContent?.lessonTitle}
+                    />
+                  </div>
+                ) : currentLessonContent?.content.externalUrl ? (
+                  <div className="text-center">
+                    <p className="text-slate-700 dark:text-slate-300 mb-4">This lesson links to an external resource.</p>
+                    <Button asChild>
+                      <a href={currentLessonContent.content.externalUrl} target="_blank" rel="noopener noreferrer">
+                        Open Resource
+                      </a>
+                    </Button>
+                  </div>
+                ) : null}
               </CardContent>
             </Card>
 
@@ -380,6 +417,19 @@ export default function CourseLearning() {
                 Next Lesson
                 <ChevronRight className="h-4 w-4 ml-1" />
               </Button>
+            </div>
+
+            {/* Completion and Certificate */}
+            <div className="mt-6 flex items-center justify-between">
+              <div className="text-sm text-slate-600 dark:text-slate-400">
+                Course progress: <span className="font-medium">{Math.round(progress)}%</span>
+              </div>
+              {Math.round(progress) === 100 && course.certificate && (
+                <Button onClick={() => navigate(`/course/${courseId}/certificate?name=${encodeURIComponent(user?.user_metadata?.full_name || user?.email || 'Learner')}`)}>
+                  <Award className="h-4 w-4 mr-1" />
+                  Get Certificate
+                </Button>
+              )}
             </div>
           </div>
         </div>

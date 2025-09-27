@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import logoSvg from '@/assets/logo-cool.png';
+import CodeFusionLogo from '@/components/CodeFusionLogo';
 
 export default function MagicLinkHandler() {
   const [searchParams] = useSearchParams();
@@ -65,7 +65,7 @@ export default function MagicLinkHandler() {
             // Redirect to dashboard
             setTimeout(() => navigate('/dashboard'), 2000);
           } else {
-            setMessage('Authentication successful! Welcome to CodeFusion AI.');
+            setMessage('Authentication successful! Welcome to CodeFusionAI.');
             setTimeout(() => navigate('/dashboard'), 2000);
           }
         } else {
@@ -108,12 +108,8 @@ export default function MagicLinkHandler() {
           {/* Logo and Brand */}
           <div className="flex items-center justify-center mb-8">
             <div className="flex items-center space-x-3">
-              <div className="relative">
-                <img src={logoSvg} alt="CodeFusion AI" className="w-12 h-12 rounded-xl shadow-lg" />
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl"></div>
-              </div>
+              <CodeFusionLogo size="lg" animated={true} showText={true} />
               <div>
-                <h1 className="text-2xl font-bold text-slate-900 dark:text-white">CodeFusion AI</h1>
                 <p className="text-slate-600 dark:text-slate-400 text-sm">Code smarter. Learn faster.</p>
               </div>
             </div>

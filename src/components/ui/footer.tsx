@@ -2,7 +2,7 @@ import { Code, Sparkles, Github, Twitter, Linkedin, Mail, Heart, Zap } from "luc
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useTheme } from "@/contexts/ThemeContext";
-import logoSvg from '@/assets/logo-cool.png';
+import CodeFusionLogo from '@/components/CodeFusionLogo';
 
 // Import language logos from All_logo_and_pictures-main
 import javascriptLogo from '@/assets/All_logo_and_pictures-main/programming languages/javascript.svg';
@@ -55,7 +55,7 @@ const socialLinks = [
   { name: "Email", icon: Mail, href: "mailto:yashrsuthar90@gmail.com" }
 ];
 
-export function Footer() {
+export function Footer({ brandSize = 'md' }: { brandSize?: 'sm' | 'md' | 'lg' | 'xl' }) {
   const { theme } = useTheme();
   
   return (
@@ -86,31 +86,11 @@ export function Footer() {
             </p>
           </div>
           
-          <div className="flex flex-wrap justify-center items-center gap-8">
-            {programmingLanguages.map((lang, index) => (
-              <div
-                key={lang.name}
-                className="group relative"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="absolute inset-0 rounded-xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity duration-300"
-                     style={{ backgroundColor: lang.color }}></div>
-                <div className={`relative backdrop-blur-sm p-4 rounded-xl border transition-all duration-300 hover:scale-110 ${
-                  theme === 'dark' 
-                    ? 'bg-white/5 border-white/10 hover:border-white/20' 
-                    : 'bg-white/80 border-slate-200 hover:border-slate-300'
-                }`}>
-                  <img 
-                    src={lang.logo} 
-                    alt={lang.name} 
-                    className="w-12 h-12 mx-auto mb-2"
-                  />
-                  <p className={`text-sm text-center font-medium ${
-                    theme === 'dark' ? 'text-white/80' : 'text-slate-700'
-                  }`}>
-                    {lang.name}
-                  </p>
-                </div>
+          <div className="flex flex-wrap justify-center items-center gap-10">
+            {programmingLanguages.map((lang) => (
+              <div key={lang.name} className="text-center">
+                <img src={lang.logo} alt={lang.name} className="w-12 h-12 mx-auto" />
+                <p className={`${theme === 'dark' ? 'text-white/80' : 'text-slate-700'} text-sm mt-2 font-medium`}>{lang.name}</p>
               </div>
             ))}
           </div>
@@ -121,29 +101,9 @@ export function Footer() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             {/* Enhanced Brand Section */}
             <div className="lg:col-span-4">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="relative group">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary via-accent to-secondary rounded-xl blur-lg group-hover:blur-xl transition-all duration-300 opacity-60"></div>
-                  <div className={`relative bg-gradient-to-br p-3 rounded-xl backdrop-blur-sm border ${
-                    theme === 'dark' 
-                      ? 'from-white/10 to-white/5 border-white/20' 
-                      : 'from-slate-200/50 to-slate-100/50 border-slate-300/30'
-                  }`}>
-                    <img src={logoSvg} alt="CodeFusion AI" className="w-10 h-10" />
-                  </div>
-                </div>
-                <div>
-                  <h1 className={`text-2xl font-bold bg-gradient-to-r bg-clip-text text-transparent ${
-                    theme === 'dark' 
-                      ? 'from-white via-white to-white/80' 
-                      : 'from-slate-800 via-slate-700 to-slate-800/80'
-                  }`}>
-                    CodeFusion AI
-                  </h1>
-                  <p className={`text-sm ${theme === 'dark' ? 'text-white/60' : 'text-slate-500'}`}>
-                    AI-Powered Learning
-                  </p>
-                </div>
+              <div className="mb-6">
+                <CodeFusionLogo size={brandSize} animated={true} showText={true} />
+                <div className="sr-only brand-text">CodeFusionAI</div>
               </div>
               
               <p className={`mb-8 leading-relaxed ${theme === 'dark' ? 'text-white/70' : 'text-slate-600'}`}>
@@ -189,7 +149,7 @@ export function Footer() {
                         <li key={link.name}>
                           <Link
                             to={link.href}
-                            className={`transition-all duration-200 hover:translate-x-2 inline-flex items-center group text-sm ${
+                            className={`transition-all duration-200 hover:translate-x-2 inline-flex items-center group text-sm transition-transform hover:translate-x-1 ${
                               theme === 'dark' 
                                 ? 'text-white/70 hover:text-white' 
                                 : 'text-slate-600 hover:text-slate-800'
@@ -213,7 +173,7 @@ export function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
             {/* Enhanced Copyright */}
             <div className={`flex items-center gap-2 ${theme === 'dark' ? 'text-white/60' : 'text-slate-500'}`}>
-              © 2025 CodeFusion AI. All rights reserved. Built with 
+              © 2025 CodeFusionAI. All rights reserved. Built with 
               <Heart className="w-4 h-4 text-red-400 animate-pulse" fill="currentColor" />
               for developers worldwide.
             </div>

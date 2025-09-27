@@ -5,6 +5,7 @@ import { Header } from '@/components/ui/header';
 import { Footer } from '@/components/ui/footer';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import CodeFusionLogo from '@/components/CodeFusionLogo';
 
 export default function About() {
   const navigate = useNavigate();
@@ -311,7 +312,7 @@ export default function About() {
                 Meet Our Team
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                The passionate individuals behind CodeFusion AI who make our mission possible.
+                The passionate individuals behind CodeFusionAI who make our mission possible.
               </p>
             </motion.div>
 

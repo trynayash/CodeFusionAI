@@ -143,10 +143,7 @@ const EnhancedAuthForm: React.FC<EnhancedAuthFormProps> = ({ mode, onModeChange 
             className="mb-8"
           >
             <h1 className="text-4xl font-bold mb-4">
-              Welcome to
-              <span className="bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
-                {" "}CodeFusion AI
-              </span>
+              <span className="brand-text">CodeFusionAI</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
               The most advanced AI-powered development platform. 

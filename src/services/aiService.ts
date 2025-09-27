@@ -360,7 +360,7 @@ class AIService {
         'Content-Type': 'application/json',
           'Authorization': 'Bearer free', // Free tier
           'HTTP-Referer': window.location.origin,
-          'X-Title': 'CodeFusion AI',
+          'X-Title': 'CodeFusionAI',
       },
       body: JSON.stringify({
           model: 'meta-llama/llama-3.2-3b-instruct:free',

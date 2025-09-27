@@ -10,7 +10,7 @@ import { PasswordValidator } from '@/components/ui/password-validator';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/useToast';
-import logoSvg from '@/assets/logo-cool.png';
+import CodeFusionLogo from '@/components/CodeFusionLogo';
 
 interface ResetPasswordForm {
   password: string;
@@ -132,15 +132,7 @@ export default function ResetPassword() {
               {/* Logo and Header */}
               <div className="text-center mb-8">
                 <div className="flex items-center justify-center mb-6">
-                  <div className="flex items-center space-x-3">
-                    <div className="relative">
-                      <img src={logoSvg} alt="CodeFusion AI" className="w-12 h-12 rounded-xl shadow-lg" />
-                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl"></div>
-                    </div>
-                    <div>
-                      <h1 className="text-xl font-bold text-slate-900 dark:text-white">CodeFusion AI</h1>
-                    </div>
-                  </div>
+                  <CodeFusionLogo size="lg" animated={true} showText={true} />
                 </div>
 
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">

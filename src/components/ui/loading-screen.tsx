@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Code, Sparkles } from 'lucide-react';
-import logoSvg from '@/assets/logo-cool.png';
+import CodeFusionLogo from '@/components/CodeFusionLogo';
 
 interface LoadingScreenProps {
   message?: string;
@@ -55,13 +55,12 @@ export function LoadingScreen({ message = "Loading your coding experience...", s
             className="mb-8"
           >
             <div className="relative">
-              <motion.img
-                src={logoSvg}
-                alt="CodeFusion AI"
-                className="w-20 h-20 mx-auto drop-shadow-2xl"
+              <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-              />
+              >
+                <CodeFusionLogo size="xl" animated={true} showText={false} />
+              </motion.div>
               <motion.div
                 className="absolute inset-0 bg-white/30 rounded-full blur-xl"
                 animate={{ scale: [1, 1.2, 1] }}
@@ -78,11 +77,11 @@ export function LoadingScreen({ message = "Loading your coding experience...", s
           className="space-y-4"
         >
           <motion.h2
-            className="text-3xl md:text-4xl font-bold text-white mb-2"
+            className="brand-text text-3xl md:text-4xl mb-2"
             animate={{ opacity: [0.7, 1, 0.7] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            CodeFusion AI
+            CodeFusionAI
           </motion.h2>
           
           <motion.p

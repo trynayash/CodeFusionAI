@@ -11,6 +11,7 @@ import { Footer } from '@/components/ui/footer';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import CodeFusionLogo from '@/components/CodeFusionLogo';
 
 export default function Contact() {
   const navigate = useNavigate();
@@ -54,11 +55,11 @@ export default function Contact() {
 
   const faqItems = [
     {
-      question: 'How do I get started with CodeFusion AI?',
+      question: 'How do I get started with CodeFusionAI?',
       answer: 'Simply sign up for a free account and you can start coding immediately in our browser-based editor.'
     },
     {
-      question: 'Is CodeFusion AI free to use?',
+      question: 'Is CodeFusionAI free to use?',
       answer: 'Yes! We offer a generous free tier with access to our code editor and basic courses. Premium features are available with our paid plans.'
     },
     {
@@ -347,7 +348,7 @@ export default function Contact() {
                 Frequently Asked Questions
               </h2>
               <p className="text-xl text-muted-foreground">
-                Quick answers to common questions about CodeFusion AI.
+                Quick answers to common questions about CodeFusionAI.
               </p>
             </motion.div>
 

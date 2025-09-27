@@ -28,6 +28,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Header } from "@/components/ui/header";
+import { IntelligentLearningAssistant } from "@/components/AI/IntelligentLearningAssistant";
+import { AdvancedAIAssistant } from "@/components/AI/AdvancedAIAssistant";
 
 // Import language icons from All_logo_and_pictures-main
 import pythonIcon from "@/assets/All_logo_and_pictures-main/programming languages/python.svg";
@@ -98,11 +100,8 @@ const languages = [
   { value: "rust", label: "Rust", icon: rustIcon },
   { value: "ruby", label: "Ruby", icon: rubyIcon },
   { value: "php", label: "PHP", icon: phpIcon },
-  { value: "swift", label: "Swift", icon: swiftIcon },
   { value: "kotlin", label: "Kotlin", icon: kotlinIcon },
   { value: "csharp", label: "C#", icon: csharpIcon },
-  { value: "scala", label: "Scala", icon: scalaIcon },
-  { value: "r", label: "R", icon: rIcon },
   { value: "dart", label: "Dart", icon: dartIcon },
 ];
 
@@ -817,6 +816,30 @@ export default function CodeEditor() {
               </div>
             </ScrollArea>
           </div>
+        </div>
+
+        {/* AI Learning Assistant Panel */}
+        <div className="mt-6">
+          <IntelligentLearningAssistant
+            code={code}
+            language={language}
+            onCodeChange={setCode}
+            onCompletionSelect={(completion) => {
+              // Insert completion at cursor position
+              setCode(code + completion);
+            }}
+            className="w-full"
+          />
+        </div>
+
+        {/* Advanced AI Assistant Panel */}
+        <div className="mt-6">
+          <AdvancedAIAssistant
+            code={code}
+            language={language}
+            onCodeChange={setCode}
+            className="w-full"
+          />
         </div>
       </div>
     </div>
