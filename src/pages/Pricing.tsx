@@ -20,7 +20,6 @@ import {
   Heart,
   Github,
   Twitter,
-  Linkedin,
   Menu,
   X
 } from 'lucide-react';
@@ -650,9 +649,6 @@ export default function Pricing() {
               </a>
               <a href="https://twitter.com/yxshsuthar/" className="text-slate-400 hover:text-white transition-colors">
                 <Twitter className="w-5 h-5" />
-              </a>
-              <a href="https://linkedin.com/in/yxshsuthar/" className="text-slate-400 hover:text-white transition-colors">
-                <Linkedin className="w-5 h-5" />
               </a>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { Code, Sparkles, Github, Twitter, Linkedin, Mail, Heart, Zap } from "lucide-react";
+import { Code, Sparkles, Github, Twitter, Mail, Heart, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -51,7 +51,6 @@ const footerLinks = {
 const socialLinks = [
   { name: "GitHub", icon: Github, href: "https://github.com/trynayash" },
   { name: "Twitter", icon: Twitter, href: "https://x.com/yxshsuthar" },
-  { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/in/yxshsuthar" },
   { name: "Email", icon: Mail, href: "mailto:yashrsuthar90@gmail.com" }
 ];
 
