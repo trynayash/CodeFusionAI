@@ -29,8 +29,7 @@ import {
   Menu,
   X,
   Github,
-  Twitter,
-  Linkedin
+  Twitter
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -597,9 +596,6 @@ export default function Features() {
               </a>
               <a href="https://twitter.com" className="text-slate-400 hover:text-white transition-colors">
                 <Twitter className="w-5 h-5" />
-              </a>
-              <a href="https://linkedin.com" className="text-slate-400 hover:text-white transition-colors">
-                <Linkedin className="w-5 h-5" />
               </a>
             </div>
           </div>

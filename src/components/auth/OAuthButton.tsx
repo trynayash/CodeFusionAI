@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Github, Linkedin } from 'lucide-react';
+import { Github } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface OAuthButtonProps {
-  provider: 'google' | 'github' | 'linkedin';
+  provider: 'google' | 'github';
   onClick: () => void;
   disabled?: boolean;
   className?: string;
@@ -33,14 +33,6 @@ const providerConfig = {
     darkClasses: 'dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-600',
     hoverGlow: 'hover:shadow-[0_0_20px_rgba(55,65,81,0.4)]',
     focusRing: 'focus:ring-gray-500/70'
-  },
-  linkedin: {
-    name: 'LinkedIn',
-    icon: <Linkedin className="w-5 h-5 text-white" />,
-    baseClasses: 'bg-[#0A66C2] hover:bg-[#004182] text-white border-[#0A66C2]',
-    darkClasses: 'dark:bg-[#0A66C2] dark:hover:bg-[#004182] dark:border-[#0A66C2]',
-    hoverGlow: 'hover:shadow-[0_0_20px_rgba(10,102,194,0.4)]',
-    focusRing: 'focus:ring-blue-600/70'
   }
 };
 
@@ -90,8 +82,7 @@ export function OAuthButton({ provider, onClick, disabled = false, className }: 
             "font-medium transition-colors duration-200",
             // Ensure text color is always visible
             provider === 'google' && "text-gray-900 hover:text-gray-900",
-            provider === 'github' && "text-white hover:text-white", 
-            provider === 'linkedin' && "text-white hover:text-white"
+            provider === 'github' && "text-white hover:text-white"
           )}>
             Continue with {config.name}
           </span>

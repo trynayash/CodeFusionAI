@@ -17,7 +17,6 @@ import {
   BarChart3,
   Github,
   Twitter,
-  Linkedin,
   Heart,
   TrendingUp,
   Users,

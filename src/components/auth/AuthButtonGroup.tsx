@@ -5,7 +5,6 @@ import { MagicLinkButton } from './MagicLinkButton';
 interface AuthButtonGroupProps {
   onGoogleSignIn: () => void;
   onGithubSignIn: () => void;
-  onLinkedInSignIn?: () => void;
   onMagicLinkClick: () => void;
   showMagicLink?: boolean;
   isLoading?: boolean;
@@ -14,7 +13,6 @@ interface AuthButtonGroupProps {
 export function AuthButtonGroup({
   onGoogleSignIn,
   onGithubSignIn,
-  onLinkedInSignIn,
   onMagicLinkClick,
   showMagicLink = true,
   isLoading = false
@@ -68,17 +66,6 @@ export function AuthButtonGroup({
           />
         </motion.div>
       </div>
-
-      {/* LinkedIn Button (if provided) */}
-      {onLinkedInSignIn && (
-        <motion.div variants={itemVariants}>
-          <OAuthButton
-            provider="linkedin"
-            onClick={onLinkedInSignIn}
-            disabled={isLoading}
-          />
-        </motion.div>
-      )}
 
       {/* Magic Link Section */}
       {showMagicLink && (
