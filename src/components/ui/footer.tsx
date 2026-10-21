@@ -40,7 +40,7 @@ const footerLinks = {
 
 const socialLinks = [
   { name: "GitHub", icon: Github, href: "https://github.com/trynayash" },
-  { name: "Twitter", icon: Twitter, href: "https://x.com/yxshsuthar" },
+  { name: "Twitter", icon: Twitter, href: "https://x.com/YashVibes1" },
   { name: "Email", icon: Mail, href: "mailto:yashrsuthar90@gmail.com" }
 ];
 
