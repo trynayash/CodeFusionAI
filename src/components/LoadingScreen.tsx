@@ -12,10 +12,10 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
   const [isComplete, setIsComplete] = useState(false);
 
   const loadingMessages = [
-    "Initializing AI Core...",
-    "Synchronizing Data Streams...",
-    "Compiling Neural Modules...",
-    "Optimizing Neural Network...",
+    "Loading the editor...",
+    "Loading courses...",
+    "Loading the interface...",
+    "Almost ready...",
     "Loading CodeFusionAI...",
   ];
 
