@@ -150,11 +150,6 @@ export default function CourseDetail() {
                     <Badge className={`${getLevelColor(course.level)} text-white`}>
                       {course.level}
                     </Badge>
-                    <div className="flex items-center space-x-1">
-                      <Star className="h-4 w-4 fill-current text-yellow-400" />
-                      <span className="font-medium">{course.rating}</span>
-                      <span className="text-white/80">({course.students.toLocaleString()} students)</span>
-                    </div>
                   </div>
                   
                   <h1 className="text-4xl sm:text-5xl font-bold mb-4">
@@ -171,29 +166,11 @@ export default function CourseDetail() {
                       <span>{course.duration}</span>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Users className="h-5 w-5" />
-                      <span>{course.students.toLocaleString()} students</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
                       <Globe className="h-5 w-5" />
                       <span>{course.language || 'English'}</span>
                     </div>
                   </div>
                   
-                  <div className="flex items-center space-x-2 mb-6">
-                    <div className="flex items-center space-x-1">
-                      <User className="h-4 w-4" />
-                      <span className="text-sm">Created by</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <img 
-                        src={course.instructorImage || '/api/placeholder/32/32'} 
-                        alt={course.instructor}
-                        className="w-8 h-8 rounded-full"
-                      />
-                      <span className="font-medium">{course.instructor}</span>
-                    </div>
-                  </div>
                 </motion.div>
               </div>
               
@@ -290,11 +267,9 @@ export default function CourseDetail() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
                 <Tabs defaultValue="overview" className="w-full">
-                  <TabsList className="grid w-full grid-cols-4">
+                  <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="overview">Overview</TabsTrigger>
                     <TabsTrigger value="curriculum">Curriculum</TabsTrigger>
-                    <TabsTrigger value="instructor">Instructor</TabsTrigger>
-                    <TabsTrigger value="reviews">Reviews</TabsTrigger>
                   </TabsList>
                   
                   <TabsContent value="overview" className="mt-6">
@@ -347,14 +322,8 @@ export default function CourseDetail() {
                         <div className="prose dark:prose-invert max-w-none">
                           <p>{course.description}</p>
                           <p>
-                            This comprehensive course is designed to take you from a complete beginner to an advanced level. 
-                            You'll learn through hands-on projects, real-world examples, and practical exercises that will 
-                            help you build a strong foundation and advance your skills.
-                          </p>
-                          <p>
-                            Our expert instructors have years of industry experience and will guide you through every step 
-                            of your learning journey. By the end of this course, you'll have the confidence and skills to 
-                            tackle real-world projects and advance your career.
+                            Where a lesson has a link, it points to a free video or article on another site,
+                            such as YouTube or GeeksforGeeks. Enroll to track which lessons you have finished.
                           </p>
                         </div>
                       </CardContent>
@@ -431,10 +400,7 @@ export default function CourseDetail() {
                                         ) : (
                                           <Lock className="h-4 w-4 text-slate-400" />
                                         )}
-                                        <span className="text-sm">{lesson}</span>
-                                        <span className="text-xs text-slate-500 ml-auto">
-                                          {Math.floor(Math.random() * 20) + 5} min
-                                        </span>
+                                        <span className="text-sm">{typeof lesson === 'string' ? lesson : (lesson as any).title}</span>
                                       </div>
                                     ))}
                                   </div>
@@ -447,103 +413,6 @@ export default function CourseDetail() {
                     </Card>
                   </TabsContent>
                   
-                  <TabsContent value="instructor" className="mt-6">
-                    <Card>
-                      <CardContent className="p-6">
-                        <div className="flex items-start space-x-4">
-                          <img 
-                            src={course.instructorImage || '/api/placeholder/80/80'} 
-                            alt={course.instructor}
-                            className="w-20 h-20 rounded-full"
-                          />
-                          <div className="flex-1">
-                            <h3 className="text-xl font-bold mb-2">{course.instructor}</h3>
-                            <p className="text-slate-600 dark:text-slate-400 mb-4">
-                              Senior Software Engineer & Technical Instructor
-                            </p>
-                            <div className="grid grid-cols-2 gap-4 mb-4">
-                              <div className="text-center">
-                                <div className="text-2xl font-bold text-blue-600">4.8</div>
-                                <div className="text-sm text-slate-600">Instructor Rating</div>
-                              </div>
-                              <div className="text-center">
-                                <div className="text-2xl font-bold text-blue-600">50K+</div>
-                                <div className="text-sm text-slate-600">Students</div>
-                              </div>
-                            </div>
-                            <p className="text-sm text-slate-700 dark:text-slate-300">
-                              With over 10 years of industry experience, our instructor has worked with leading 
-                              tech companies and has a passion for teaching. They bring real-world expertise 
-                              and practical insights to help you succeed in your learning journey.
-                            </p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </TabsContent>
-                  
-                  <TabsContent value="reviews" className="mt-6">
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Student Reviews</CardTitle>
-                        <div className="flex items-center space-x-4">
-                          <div className="flex items-center space-x-1">
-                            <Star className="h-5 w-5 fill-current text-yellow-500" />
-                            <span className="text-2xl font-bold">{course.rating}</span>
-                          </div>
-                          <div className="text-slate-600 dark:text-slate-400">
-                            ({course.students.toLocaleString()} reviews)
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-6">
-                          {[
-                            {
-                              name: "Sarah Johnson",
-                              rating: 5,
-                              comment: "Excellent course! The instructor explains everything clearly and the projects are very practical.",
-                              date: "2 weeks ago"
-                            },
-                            {
-                              name: "Mike Chen",
-                              rating: 5,
-                              comment: "This course helped me land my dream job. Highly recommended!",
-                              date: "1 month ago"
-                            },
-                            {
-                              name: "Emily Davis",
-                              rating: 4,
-                              comment: "Great content and well-structured. Would love to see more advanced topics.",
-                              date: "2 months ago"
-                            }
-                          ].map((review, index) => (
-                            <div key={index} className="border-b pb-4 last:border-b-0">
-                              <div className="flex items-start space-x-3">
-                                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-medium">
-                                  {review.name.charAt(0)}
-                                </div>
-                                <div className="flex-1">
-                                  <div className="flex items-center space-x-2 mb-1">
-                                    <span className="font-medium">{review.name}</span>
-                                    <div className="flex items-center">
-                                      {[...Array(review.rating)].map((_, i) => (
-                                        <Star key={i} className="h-4 w-4 fill-current text-yellow-500" />
-                                      ))}
-                                    </div>
-                                    <span className="text-sm text-slate-500">{review.date}</span>
-                                  </div>
-                                  <p className="text-sm text-slate-700 dark:text-slate-300">
-                                    {review.comment}
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </TabsContent>
                 </Tabs>
               </div>
               
@@ -555,10 +424,6 @@ export default function CourseDetail() {
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm">Students</span>
-                          <span className="font-medium">{course.students.toLocaleString()}</span>
-                        </div>
                         <div className="flex items-center justify-between">
                           <span className="text-sm">Duration</span>
                           <span className="font-medium">{course.duration}</span>

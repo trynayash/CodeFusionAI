@@ -175,7 +175,7 @@ export default function CodeEditor() {
       if (errors.length > 0) {
         const errorMessage = errors.join("\n");
         setOutput(
-          `Compilation/Runtime Errors:\n${errorMessage}\n\nPlease fix these errors and try again.`
+          `Basic syntax check found problems:\n${errorMessage}\n\nPlease fix these errors and try again.`
         );
         toast({
           title: "Code execution failed",
@@ -188,11 +188,11 @@ export default function CodeEditor() {
         // Simulate successful execution with detailed output
         const result = simulateCodeExecution(code, language);
         setOutput(
-          `Execution Output:\n${result}\n\nCode executed successfully!`
+          `Simulated output (code is not executed on a server yet):\n${result}`
         );
         toast({
-          title: "Code executed successfully!",
-          description: "Your code ran without errors.",
+          title: "Run finished (simulated)",
+          description: "No basic syntax errors found. The output is simulated.",
         });
 
         // Save code to Supabase automatically

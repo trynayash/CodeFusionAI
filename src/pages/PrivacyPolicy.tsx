@@ -119,21 +119,18 @@ export default function PrivacyPolicy() {
                       <li>Provide and maintain our services</li>
                       <li>Personalize your learning experience</li>
                       <li>Send important updates and notifications</li>
-                      <li>Improve our AI algorithms and features</li>
+                      <li>Improve the site and its features</li>
                     </ul>
                   </div>
 
                   <div>
                     <h2 className="text-2xl font-bold mb-4">Data Security</h2>
                     <p className="text-muted-foreground mb-4">
-                      We implement appropriate security measures to protect your personal information 
-                      against unauthorized access, alteration, disclosure, or destruction.
+                      We take basic steps to protect your personal information:
                     </p>
                     <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
-                      <li>Encryption of data in transit and at rest</li>
-                      <li>Regular security audits and monitoring</li>
-                      <li>Access controls and authentication</li>
-                      <li>Secure hosting infrastructure</li>
+                      <li>Data is sent over HTTPS</li>
+                      <li>Accounts and data are handled by Supabase authentication and database access rules</li>
                     </ul>
                   </div>
 
@@ -154,8 +151,8 @@ export default function PrivacyPolicy() {
                     <h2 className="text-2xl font-bold mb-4">Contact Us</h2>
                     <p className="text-muted-foreground">
                       If you have any questions about this Privacy Policy, please contact us at{' '}
-                      <a href="mailto:privacy@codefusionai.com" className="text-primary hover:underline">
-                        privacy@codefusionai.com
+                      <a href="mailto:yashrsuthar90@gmail.com" className="text-primary hover:underline">
+                        yashrsuthar90@gmail.com
                       </a>
                     </p>
                   </div>

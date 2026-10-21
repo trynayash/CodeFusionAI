@@ -98,10 +98,9 @@ const EnhancedAuthForm: React.FC<EnhancedAuthFormProps> = ({ mode, onModeChange 
   };
 
   const features = [
-    { icon: CheckCircle, text: 'AI-powered code assistance' },
-    { icon: CheckCircle, text: '50+ programming languages' },
-    { icon: CheckCircle, text: 'Real-time collaboration' },
-    { icon: CheckCircle, text: 'Cloud-based development' },
+    { icon: CheckCircle, text: 'Browser code editor' },
+    { icon: CheckCircle, text: 'Rule-based code tips' },
+    { icon: CheckCircle, text: 'Saved snippets' },
   ];
 
   return (
@@ -146,8 +145,7 @@ const EnhancedAuthForm: React.FC<EnhancedAuthFormProps> = ({ mode, onModeChange 
               <span className="brand-text">CodeFusionAI</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              The most advanced AI-powered development platform. 
-              Code smarter, build faster, and collaborate seamlessly.
+              A browser code editor and course catalog, built as a personal project.
             </p>
           </motion.div>
 
@@ -211,7 +209,7 @@ const EnhancedAuthForm: React.FC<EnhancedAuthFormProps> = ({ mode, onModeChange 
               <CardDescription className="text-base">
                 {mode === 'signin' 
                   ? 'Sign in to your account to continue coding' 
-                  : 'Join thousands of developers building the future'
+                  : 'Create a free account'
                 }
               </CardDescription>
             </CardHeader>

@@ -7,14 +7,10 @@ export const coursesData: Course[] = [
     description: 'Build beautiful, responsive web pages from scratch using semantic HTML5 and modern CSS3.',
     level: 'Beginner',
     duration: '4 weeks',
-    students: 22000,
-    rating: 4.8,
     price: 0,
     image: '🌐',
     skills: ['HTML5', 'CSS3', 'Responsive Design', 'Flexbox', 'Grid'],
     featured: true,
-    instructor: 'Anita Verma',
-    instructorImage: 'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?w=150&h=150&fit=crop&crop=face',
     curriculum: [
       { module: 'Getting Started', lessons: [
         { title: 'Web Basics', url: 'https://www.geeksforgeeks.org/web-development/', videoUrl: 'https://www.youtube.com/watch?v=UB1O30fR-EE' },
@@ -60,14 +56,10 @@ export const coursesData: Course[] = [
     description: 'Learn core JavaScript concepts to make your web pages dynamic and interactive.',
     level: 'Beginner',
     duration: '5 weeks',
-    students: 18500,
-    rating: 4.7,
     price: 0,
     image: '🟨',
     skills: ['Variables', 'Functions', 'DOM', 'Events', 'Fetch API'],
     featured: true,
-    instructor: 'Rahul Gupta',
-    instructorImage: 'https://images.unsplash.com/photo-1552055568-9b56f4c1f38e?w=150&h=150&fit=crop&crop=face',
     curriculum: [
       { module: 'JS Basics', lessons: [
         { title: 'Syntax', url: 'https://www.geeksforgeeks.org/javascript/', videoUrl: 'https://www.youtube.com/watch?v=W6NZfCO5SIk' },
@@ -112,14 +104,10 @@ export const coursesData: Course[] = [
     description: 'Master Python fundamentals with hands-on projects and real-world applications. Perfect for complete beginners.',
     level: 'Beginner',
     duration: '8 weeks',
-    students: 15420,
-    rating: 4.9,
     price: 0, // Free course
     image: '🐍',
     skills: ['Variables & Data Types', 'Control Structures', 'Functions', 'OOP Basics', 'File Handling', 'Error Handling'],
     featured: true,
-    instructor: 'Dr. Sarah Johnson',
-    instructorImage: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
     curriculum: [
       {
         module: 'Python Basics',
@@ -171,14 +159,9 @@ export const coursesData: Course[] = [
     description: 'Deep dive into modern JavaScript, ES6+, async programming, and popular frameworks.',
     level: 'Advanced',
     duration: '12 weeks',
-    students: 8930,
-    rating: 4.8,
     price: 2999,
-    originalPrice: 4999,
     image: '⚡',
     skills: ['ES6+ Features', 'Async/Await', 'React/Vue', 'Node.js', 'TypeScript', 'Testing'],
-    instructor: 'Alex Rodriguez',
-    instructorImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
     curriculum: [
       {
         module: 'Modern JavaScript Features',
@@ -230,14 +213,9 @@ export const coursesData: Course[] = [
     description: 'Master computer science fundamentals essential for technical interviews and efficient programming.',
     level: 'Intermediate',
     duration: '10 weeks',
-    students: 12150,
-    rating: 4.9,
     price: 3999,
-    originalPrice: 5999,
     image: '🧠',
     skills: ['Arrays & Strings', 'Trees & Graphs', 'Dynamic Programming', 'System Design', 'Big O Notation', 'Sorting Algorithms'],
-    instructor: 'Prof. Michael Chen',
-    instructorImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
     curriculum: [
       {
         module: 'Fundamentals',
@@ -294,14 +272,9 @@ export const coursesData: Course[] = [
     description: 'Build complete web applications from frontend to backend deployment using modern technologies.',
     level: 'Intermediate',
     duration: '16 weeks',
-    students: 6780,
-    rating: 4.7,
     price: 5999,
-    originalPrice: 8999,
     image: '🌐',
     skills: ['React/Angular', 'Node.js/Express', 'Databases', 'AWS/Docker', 'REST APIs', 'Authentication'],
-    instructor: 'Emma Thompson',
-    instructorImage: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
     curriculum: [
       {
         module: 'Frontend Development',
@@ -353,14 +326,9 @@ export const coursesData: Course[] = [
     description: 'Learn ML algorithms, data preprocessing, model training, and deployment using Python and popular libraries.',
     level: 'Advanced',
     duration: '14 weeks',
-    students: 4920,
-    rating: 4.8,
     price: 6999,
-    originalPrice: 9999,
     image: '🤖',
     skills: ['Scikit-learn', 'TensorFlow', 'Data Analysis', 'Model Deployment', 'Deep Learning', 'Computer Vision'],
-    instructor: 'Dr. Raj Patel',
-    instructorImage: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face',
     curriculum: [
       {
         module: 'Python for Data Science',
@@ -412,14 +380,9 @@ export const coursesData: Course[] = [
     description: 'Create native and cross-platform mobile applications for iOS and Android using modern frameworks.',
     level: 'Intermediate',
     duration: '12 weeks',
-    students: 7340,
-    rating: 4.6,
     price: 4999,
-    originalPrice: 7499,
     image: '📱',
     skills: ['React Native', 'Flutter', 'iOS/Android', 'App Store Publishing', 'Firebase', 'Push Notifications'],
-    instructor: 'James Wilson',
-    instructorImage: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&h=150&fit=crop&crop=face',
     curriculum: [
       {
         module: 'Mobile Development Fundamentals',
@@ -477,7 +440,6 @@ export const learningPaths = [
     icon: '🎨',
     skills: ['HTML/CSS', 'JavaScript', 'React', 'Vue.js', 'Responsive Design'],
     price: 8999,
-    originalPrice: 12999
   },
   {
     id: 'backend-engineer',
@@ -488,7 +450,6 @@ export const learningPaths = [
     icon: '⚙️',
     skills: ['Node.js', 'Python', 'Databases', 'API Design', 'System Architecture'],
     price: 11999,
-    originalPrice: 16999
   },
   {
     id: 'data-scientist',
@@ -499,7 +460,6 @@ export const learningPaths = [
     icon: '📊',
     skills: ['Python', 'Statistics', 'Machine Learning', 'Data Visualization', 'Deep Learning'],
     price: 9999,
-    originalPrice: 14999
   },
   {
     id: 'mobile-developer',
@@ -510,7 +470,6 @@ export const learningPaths = [
     icon: '📱',
     skills: ['React Native', 'Flutter', 'Mobile UI/UX', 'App Publishing', 'Cross-platform Development'],
     price: 6999,
-    originalPrice: 9999
   }
 ];
 
@@ -526,8 +485,6 @@ export const categories = [
 export const levels = ['All Levels', 'Beginner', 'Intermediate', 'Advanced'];
 
 export const sortOptions = [
-  { value: 'popular', label: 'Most Popular' },
-  { value: 'rating', label: 'Highest Rated' },
   { value: 'price-low', label: 'Price: Low to High' },
   { value: 'price-high', label: 'Price: High to Low' },
   { value: 'newest', label: 'Newest First' }

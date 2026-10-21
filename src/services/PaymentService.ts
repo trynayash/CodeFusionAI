@@ -7,15 +7,11 @@ export interface Course {
   description: string;
   level: 'Beginner' | 'Intermediate' | 'Advanced';
   duration: string;
-  students: number;
-  rating: number;
   price: number; // Price in INR, 0 for free courses
   originalPrice?: number;
   image: string;
   skills: string[];
   featured?: boolean;
-  instructor: string;
-  instructorImage: string;
   curriculum: {
     module: string;
     lessons: (string | { title: string; url?: string; videoId?: string; videoUrl?: string })[];

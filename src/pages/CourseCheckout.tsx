@@ -77,8 +77,6 @@ export default function CourseCheckout() {
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center gap-6 text-slate-600 dark:text-slate-300 mb-6">
-                      <div className="flex items-center gap-2"><Star className="h-4 w-4 text-yellow-500" /><span>{course.rating}</span></div>
-                      <div className="flex items-center gap-2"><Users className="h-4 w-4" /><span>{course.students.toLocaleString()} students</span></div>
                       <div className="flex items-center gap-2"><Clock className="h-4 w-4" /><span>{course.duration}</span></div>
                     </div>
 

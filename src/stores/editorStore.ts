@@ -536,7 +536,7 @@ export const useEditorStore = create<EditorState & EditorActions>()(
 
               const mockResult: ExecutionResult = {
                 success: true,
-                output: 'Hello, World!\nCode executed successfully!',
+                output: 'Simulated run: code execution is not connected yet.',
                 errors: [],
                 warnings: [],
                 executionTime: 123,

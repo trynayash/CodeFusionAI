@@ -1,3 +1,4 @@
+import { Footer } from '@/components/ui/footer';
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -106,75 +107,40 @@ export default function Features() {
 
   const features = [
     {
-      icon: Brain,
-      title: "AI Code Generation",
-      description: "Generate complex code structures instantly with context-aware AI that understands your project",
-      gradient: "from-blue-500 to-cyan-500",
-      features: ["Natural language to code", "Context-aware suggestions", "Multi-language support", "Code optimization"]
-    },
-    {
-      icon: Shield,
-      title: "Smart Debugging",
-      description: "Identify and fix bugs before they cause issues with intelligent error detection and solutions",
-      gradient: "from-purple-500 to-pink-500",
-      features: ["Real-time error detection", "Automated fixes", "Performance optimization", "Security scanning"]
-    },
-    {
-      icon: BookOpen,
-      title: "Personalized Learning",
-      description: "Adaptive learning paths that evolve with your skill level and coding style preferences",
-      gradient: "from-green-500 to-teal-500",
-      features: ["Custom learning paths", "Interactive tutorials", "Progress tracking", "Skill assessments"]
-    },
-    {
-      icon: Zap,
-      title: "Lightning Fast",
-      description: "Optimized for speed with instant responses and seamless integration into your workflow",
-      gradient: "from-orange-500 to-red-500",
-      features: ["Sub-second responses", "Cloud-powered", "Offline capability", "Auto-save"]
-    },
-    {
-      icon: Users,
-      title: "Team Collaboration",
-      description: "Work together seamlessly with real-time collaboration and shared AI insights",
-      gradient: "from-indigo-500 to-purple-500",
-      features: ["Real-time sync", "Shared workspaces", "Team analytics", "Code reviews"]
-    },
-    {
-      icon: Target,
-      title: "Project Optimization",
-      description: "Comprehensive project analysis with actionable insights for better code quality",
-      gradient: "from-pink-500 to-rose-500",
-      features: ["Code quality metrics", "Performance insights", "Best practice suggestions", "Refactoring tips"]
-    },
-    {
       icon: Code,
-      title: "Advanced Editor",
-      description: "Professional code editor with syntax highlighting, IntelliSense, and multi-language support",
-      gradient: "from-cyan-500 to-blue-500",
-      features: ["Syntax highlighting", "Code completion", "Error detection", "Multiple themes"]
+      title: "Browser Code Editor",
+      description: "A Monaco editor (the editor behind VS Code) with a picker for 13 languages. The Run button shows a simulated result. Code is not executed on a server",
+      gradient: "from-blue-500 to-cyan-500",
+      features: ["Syntax highlighting", "Hello World starter code", "Basic syntax checks before a run"]
     },
     {
       icon: Database,
-      title: "Cloud Storage",
-      description: "Your code is automatically saved and synced across all your devices securely",
+      title: "Saved Snippets",
+      description: "Save code snippets to your account. They are stored in Supabase and listed on your dashboard",
       gradient: "from-emerald-500 to-green-500",
-      features: ["Auto-save functionality", "Cross-device sync", "Version history", "Secure encryption"]
+      features: ["Save and load snippets", "Recent activity on the dashboard"]
     },
     {
-      icon: Globe,
-      title: "Multi-Language Support",
-      description: "Support for 50+ programming languages with specialized AI assistance for each",
-      gradient: "from-violet-500 to-purple-500",
-      features: ["50+ languages", "Language-specific AI", "Framework support", "Library integration"]
+      icon: Shield,
+      title: "Code Tips",
+      description: "Panels that explain code and suggest fixes using rule-based pattern checks. They do not call a live AI model",
+      gradient: "from-purple-500 to-pink-500",
+      features: ["Common error checks", "Refactoring hints", "Performance hints"]
+    },
+    {
+      icon: BookOpen,
+      title: "Courses",
+      description: "A course catalog where each lesson links to a free video or article",
+      gradient: "from-green-500 to-teal-500",
+      features: ["Learning paths", "Lesson progress tracking", "Completion certificates with a verify page"]
+    },
+    {
+      icon: Users,
+      title: "Accounts",
+      description: "Sign in with email and password, a magic link, or Google and GitHub, using Supabase Auth",
+      gradient: "from-indigo-500 to-purple-500",
+      features: ["Email verification", "Password reset", "Session timeout warning"]
     }
-  ];
-
-  const stats = [
-    { icon: Users, value: 50000, suffix: '+', label: 'Active Developers', color: 'from-blue-500 to-cyan-500' },
-    { icon: Code, value: 100, suffix: 'M+', label: 'Lines Generated', color: 'from-purple-500 to-pink-500' },
-    { icon: Brain, value: 99, suffix: '%', label: 'AI Accuracy', color: 'from-green-500 to-teal-500' },
-    { icon: Zap, value: 2, suffix: 's', label: 'Response Time', color: 'from-orange-500 to-red-500' },
   ];
 
   return (
@@ -195,9 +161,6 @@ export default function Features() {
               </a>
               <a href="/courses" className="text-slate-300 hover:text-white transition-colors duration-300 text-sm font-medium">
                 Courses
-              </a>
-              <a href="/pricing" className="text-slate-300 hover:text-white transition-colors duration-300 text-sm font-medium">
-                Pricing
               </a>
               <a href="/about" className="text-slate-300 hover:text-white transition-colors duration-300 text-sm font-medium">
                 About
@@ -241,9 +204,6 @@ export default function Features() {
               <a href="/courses" className="block px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-all duration-300">
                 Courses
               </a>
-              <a href="/pricing" className="block px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-all duration-300">
-                Pricing
-              </a>
               <a href="/about" className="block px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-all duration-300">
                 About
               </a>
@@ -280,7 +240,7 @@ export default function Features() {
               className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-full"
             >
               <Sparkles className="w-4 h-4 text-blue-400" />
-              <span className="text-sm text-blue-400 font-medium">Comprehensive Feature Set</span>
+              <span className="text-sm text-blue-400 font-medium">Features</span>
             </motion.div>
 
             {/* Main Headline */}
@@ -290,10 +250,10 @@ export default function Features() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              Powerful Features for
+              What You Can Do
                 <br />
               <span className="text-white">
-                Modern Development
+                in CodeFusion AI
               </span>
             </motion.h1>
             
@@ -304,7 +264,7 @@ export default function Features() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              Discover the comprehensive suite of AI-powered tools designed to accelerate your development workflow and enhance your coding experience.
+              A short list of what the app does today, and what it does not do yet.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -337,48 +297,6 @@ export default function Features() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-white">
-              Trusted by Developers Worldwide
-            </h2>
-            <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-              Join the CodeFusionAI community that's revolutionizing software development
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="text-center group"
-              >
-                <div className={`w-16 h-16 bg-gradient-to-r ${stat.color} rounded-2xl p-4 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                  <stat.icon className="w-full h-full text-white" />
-                </div>
-                <div className="text-3xl font-bold text-white mb-1">
-                  <AnimatedCounter end={stat.value} />
-                  {stat.suffix}
-                </div>
-                <div className="text-slate-400 text-sm">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
-          </div>
-        </section>
-
       {/* Features Section */}
       <section id="features" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
@@ -390,10 +308,10 @@ export default function Features() {
               className="text-center mb-16"
             >
             <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-white">
-              Comprehensive Feature Set
+              Feature List
               </h2>
             <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-              Everything you need to build, learn, and collaborate in one powerful platform
+              There is no real-time collaboration and no server-side code execution yet
               </p>
             </motion.div>
 
@@ -439,10 +357,10 @@ export default function Features() {
               className="text-center mb-16"
             >
             <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-white">
-              Support for All Major Languages
+              Languages
               </h2>
             <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-              Get AI assistance for 50+ programming languages and frameworks
+              A few of the languages in the editor picker
               </p>
             </motion.div>
 
@@ -484,12 +402,12 @@ export default function Features() {
             <h2 className="text-4xl lg:text-6xl font-bold text-white">
               Ready to 
               <span className="text-white">
-                {" "}Experience These Features?
+                {" "}Try It?
               </span>
               </h2>
             
             <p className="text-xl text-slate-300 max-w-2xl mx-auto">
-              Join thousands of developers who are already using these powerful features to build amazing applications
+              Create a free account and open the editor.
               </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -503,104 +421,11 @@ export default function Features() {
                 </Button>
             </div>
 
-            <div className="flex items-center justify-center gap-8 pt-8">
-              <div className="flex items-center gap-2 text-slate-400">
-                <CheckCircle className="w-5 h-5 text-green-400" />
-                <span>Free to start</span>
-              </div>
-              <div className="flex items-center gap-2 text-slate-400">
-                <CheckCircle className="w-5 h-5 text-green-400" />
-                <span>No credit card required</span>
-              </div>
-              <div className="flex items-center gap-2 text-slate-400">
-                <CheckCircle className="w-5 h-5 text-green-400" />
-                <span>Cancel anytime</span>
-              </div>
-              </div>
             </motion.div>
           </div>
         </section>
 
-      {/* Footer */}
-      <footer className="bg-slate-900 border-t border-slate-800 py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-5 gap-8">
-            {/* Logo and Description */}
-            <div className="md:col-span-2">
-              <div className="mb-4">
-                <CodeFusionLogo size="md" animated={false} showText={true} />
-              </div>
-              <p className="text-slate-300 mb-6 max-w-md">
-                Empowering the next generation of developers through AI-powered learning and intelligent code assistance.
-              </p>
-              
-              {/* Newsletter */}
-              <div className="space-y-3">
-                <h4 className="text-white font-semibold flex items-center gap-2">
-                  <MessageSquare className="w-4 h-4" />
-                  Stay Updated
-                </h4>
-                <div className="flex gap-2">
-                  <Input 
-                    placeholder="Enter your email" 
-                    className="bg-slate-800 border-slate-700 text-white placeholder-slate-400"
-                  />
-                  <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
-                    Subscribe
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            {/* Navigation Links */}
-            <div>
-              <h4 className="text-white font-semibold mb-4">Platform</h4>
-              <ul className="space-y-2">
-                <li><a href="/features" className="text-slate-300 hover:text-white transition-colors transition-transform duration-200 hover:translate-x-1">Features</a></li>
-                <li><a href="/pricing" className="text-slate-300 hover:text-white transition-colors transition-transform duration-200 hover:translate-x-1">Pricing</a></li>
-                <li><a href="/ai-assistant" className="text-slate-300 hover:text-white transition-colors transition-transform duration-200 hover:translate-x-1">AI Assistant</a></li>
-                
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-white font-semibold mb-4">Resources</h4>
-              <ul className="space-y-2">
-                <li><a href="/documentation" className="text-slate-300 hover:text-white transition-colors transition-transform duration-200 hover:translate-x-1">Documentation</a></li>
-                
-                <li><a href="/blog" className="text-slate-300 hover:text-white transition-colors transition-transform duration-200 hover:translate-x-1">Blog</a></li>
-                <li><a href="/community" className="text-slate-300 hover:text-white transition-colors transition-transform duration-200 hover:translate-x-1">Community</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-white font-semibold mb-4">Company</h4>
-              <ul className="space-y-2">
-                <li><a href="/about" className="text-slate-300 hover:text-white transition-colors transition-transform duration-200 hover:translate-x-1">About Us</a></li>
-                <li><a href="/careers" className="text-slate-300 hover:text-white transition-colors transition-transform duration-200 hover:translate-x-1">Careers</a></li>
-                <li><a href="/contact" className="text-slate-300 hover:text-white transition-colors transition-transform duration-200 hover:translate-x-1">Contact</a></li>
-                <li><a href="/privacy-policy" className="text-slate-300 hover:text-white transition-colors transition-transform duration-200 hover:translate-x-1">Privacy</a></li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Bottom Bar */}
-          <div className="border-t border-slate-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-slate-400 text-sm flex items-center gap-2">
-              © 2025 CodeFusionAI. All rights reserved. Made with <Heart className="w-4 h-4 text-red-500" /> for developers
-            </p>
-            
-            <div className="flex items-center gap-4 mt-4 md:mt-0">
-              <a href="https://github.com" className="text-slate-400 hover:text-white transition-colors">
-                <Github className="w-5 h-5" />
-              </a>
-              <a href="https://twitter.com" className="text-slate-400 hover:text-white transition-colors">
-                <Twitter className="w-5 h-5" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

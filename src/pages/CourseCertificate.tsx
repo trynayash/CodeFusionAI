@@ -65,7 +65,7 @@ export default function CourseCertificate() {
                 <div className="text-3xl font-bold mt-2">{name}</div>
                 <p className="mt-4 text-slate-600">has successfully completed the course</p>
                 <div className="text-2xl font-semibold mt-1">{course.title}</div>
-                <p className="mt-2 text-slate-500 text-sm">with distinction, demonstrating proficiency in the skills covered.</p>
+                <p className="mt-2 text-slate-500 text-sm">by completing the lessons in this course.</p>
               </div>
               <div className="mt-8 grid grid-cols-2 gap-6">
                 <div>

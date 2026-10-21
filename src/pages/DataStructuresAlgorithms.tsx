@@ -117,15 +117,14 @@ export default function DataStructuresAlgorithms() {
                         }`}>
                           {topic.difficulty}
                         </span>
-                        <span>{topic.lessons} lessons</span>
                       </div>
                     </CardHeader>
                     <CardContent>
                       <CardDescription className="text-base mb-4">
                         {topic.description}
                       </CardDescription>
-                      <Button variant="outline" className="w-full">
-                        View Lessons
+                      <Button variant="outline" className="w-full" onClick={() => navigate('/course/data-structures-algorithms')}>
+                        View Course
                       </Button>
                     </CardContent>
                   </Card>

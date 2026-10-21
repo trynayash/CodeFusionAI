@@ -100,7 +100,7 @@ export function AdvancedAIAssistant({
       }
     } catch (error) {
       log.error('Failed to load AI assistance', error as Error, 'ADVANCED_AI_ASSISTANT');
-      setError('Failed to load AI assistance. Please try again.');
+      setError('Failed to load code tips. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -208,9 +208,9 @@ export function AdvancedAIAssistant({
       <Card className={`w-full ${className}`}>
         <CardContent className="p-6 text-center">
           <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-          <h3 className="text-lg font-semibold mb-2">Sign in for Advanced AI Assistant</h3>
+          <h3 className="text-lg font-semibold mb-2">Sign in for Code Tips</h3>
           <p className="text-muted-foreground">
-            Get AI-powered code explanations, refactoring suggestions, performance analysis, and debugging assistance.
+            Get rule-based code explanations, refactoring hints, performance hints and debugging steps.
           </p>
         </CardContent>
       </Card>
@@ -303,7 +303,7 @@ export function AdvancedAIAssistant({
                 <div className="text-center py-8">
                   <BookOpen className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
                   <p className="text-muted-foreground">
-                    {isLoading ? 'Analyzing code...' : 'No code explanation available. Write some code to get AI-powered explanations.'}
+                    {isLoading ? 'Analyzing code...' : 'No code explanation available. Write some code to get explanations.'}
                   </p>
                 </div>
               )}
@@ -392,7 +392,7 @@ export function AdvancedAIAssistant({
                 <div className="text-center py-8">
                   <Wrench className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
                   <p className="text-muted-foreground">
-                    {isLoading ? 'Analyzing code for refactoring opportunities...' : 'No refactoring suggestions available. Write some code to get AI-powered refactoring suggestions.'}
+                    {isLoading ? 'Analyzing code for refactoring opportunities...' : 'No refactoring suggestions available. Write some code to get refactoring suggestions.'}
                   </p>
                 </div>
               )}

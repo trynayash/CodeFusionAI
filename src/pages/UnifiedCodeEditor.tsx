@@ -262,8 +262,8 @@ function UnifiedCodeEditor() {
     try {
       await executeCode();
       toast({
-        title: "Code Executed",
-        description: "Code has been executed successfully",
+        title: "Run finished (simulated)",
+        description: "Code execution is not connected yet, so the output is simulated",
       });
     } catch (error) {
       log.error('Code execution failed', error as Error, 'UNIFIED_EDITOR');
@@ -281,7 +281,7 @@ function UnifiedCodeEditor() {
       await analyzeWithAI();
       toast({
         title: "Code Analyzed",
-        description: "AI analysis completed",
+        description: "Code analysis completed",
       });
     } catch (error) {
       log.error('Code analysis failed', error as Error, 'UNIFIED_EDITOR');

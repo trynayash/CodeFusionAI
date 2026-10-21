@@ -45,7 +45,7 @@ export default function Courses() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All Courses');
   const [selectedLevel, setSelectedLevel] = useState('All Levels');
-  const [sortBy, setSortBy] = useState('popular');
+  const [sortBy, setSortBy] = useState('price-low');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [enrolledCourses, setEnrolledCourses] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -130,8 +130,6 @@ export default function Courses() {
     return matchesSearch && matchesCategory && matchesLevel;
   }).sort((a, b) => {
     switch (sortBy) {
-      case 'rating':
-        return b.rating - a.rating;
       case 'price-low':
         return a.price - b.price;
       case 'price-high':
@@ -139,7 +137,7 @@ export default function Courses() {
       case 'newest':
         return 0; // Would need created_at field
       default:
-        return b.students - a.students; // Most popular
+        return 0;
     }
   });
 
@@ -181,7 +179,7 @@ export default function Courses() {
                 className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-6 py-3 mb-8"
               >
                 <Trophy className="h-5 w-5" />
-                <span className="text-sm font-medium">Expert-Led Courses</span>
+                <span className="text-sm font-medium">Course Catalog</span>
               </motion.div>
               
               <motion.h1
@@ -203,8 +201,8 @@ export default function Courses() {
                 transition={{ duration: 0.8, delay: 0.4 }}
                 className="text-xl sm:text-2xl text-white/90 mb-10 max-w-3xl mx-auto"
               >
-                Join 50,000+ students learning from industry experts. From beginner to advanced, 
-                we've got your coding journey covered with hands-on projects and real-world applications.
+                Each course groups free videos and articles into modules. Sign in to track your
+                progress and get a certificate when you finish.
               </motion.p>
               
               <motion.div
@@ -220,14 +218,6 @@ export default function Courses() {
                 >
                   <BookOpen className="mr-2 h-5 w-5" />
                   Explore Courses
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm"
-                >
-                  <Play className="mr-2 h-5 w-5" />
-                  Watch Demo
                 </Button>
               </motion.div>
             </motion.div>
@@ -247,7 +237,7 @@ export default function Courses() {
                 Choose Your Learning Path
               </h2>
               <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-                Structured career paths designed by industry experts to take you from beginner to job-ready professional.
+                Groups of courses for a few common goals.
               </p>
             </motion.div>
 
@@ -276,11 +266,6 @@ export default function Courses() {
                         <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                           {formatPrice(path.price)}
                         </div>
-                        {path.originalPrice && (
-                          <div className="text-sm text-slate-500 line-through">
-                            {formatPrice(path.originalPrice)}
-                          </div>
-                        )}
                       </div>
                       <Button 
                         variant="outline" 
@@ -309,10 +294,10 @@ export default function Courses() {
               className="text-center mb-12"
             >
               <h2 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-                Popular Courses
+                All Courses
               </h2>
               <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-                Join thousands of students in our most popular programming courses with lifetime access and certificates.
+                Search, filter and open a course to see its modules and lessons.
               </p>
             </motion.div>
 
@@ -452,14 +437,6 @@ export default function Courses() {
                               <Clock className="h-4 w-4" />
                               <span>{course.duration}</span>
                             </div>
-                            <div className="flex items-center space-x-1">
-                              <Users className="h-4 w-4" />
-                              <span>{course.students.toLocaleString()}</span>
-                            </div>
-                            <div className="flex items-center space-x-1">
-                              <Star className="h-4 w-4 fill-current text-yellow-500" />
-                              <span>{course.rating}</span>
-                            </div>
                           </div>
 
                           <div className="mb-4">
@@ -555,32 +532,6 @@ export default function Courses() {
           </div>
         </section>
 
-        {/* Enhanced Stats Section */}
-        <section className="py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 relative overflow-hidden">
-          <div className="absolute inset-0 bg-black/20"></div>
-          <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-              {[
-                { number: '50K+', label: 'Active Students', delay: 0.1 },
-                { number: '200+', label: 'Expert Instructors', delay: 0.2 },
-                { number: '95%', label: 'Completion Rate', delay: 0.3 },
-                { number: '4.8★', label: 'Average Rating', delay: 0.4 }
-              ].map((stat, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: stat.delay }}
-                  className="text-white"
-                >
-                  <div className="text-4xl font-bold mb-2">{stat.number}</div>
-                  <p className="text-white/80">{stat.label}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* Enhanced CTA Section */}
         <section className="py-20 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm">
           <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -593,7 +544,7 @@ export default function Courses() {
                 Ready to Start Your Learning Journey?
               </h2>
               <p className="text-xl text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto">
-                Join our community of learners and start building your programming skills today with expert guidance and hands-on projects.
+                Pick a course, follow the lessons and track your progress in your account.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button

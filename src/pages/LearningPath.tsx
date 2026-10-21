@@ -45,9 +45,6 @@ export default function LearningPath() {
               </div>
               <div className="hidden md:block text-right">
                 <div className="text-2xl font-bold">{formatPrice(path.price)}</div>
-                {path.originalPrice && (
-                  <div className="text-white/80 line-through">{formatPrice(path.originalPrice)}</div>
-                )}
                 <div className="text-sm mt-2">{path.courses.length} courses • {path.duration}</div>
               </div>
             </div>
@@ -65,8 +62,6 @@ export default function LearningPath() {
                         <Badge>{course.level}</Badge>
                         <div className="flex items-center gap-2 text-sm text-slate-500">
                           <div className="flex items-center gap-1"><Clock className="h-4 w-4" />{course.duration}</div>
-                          <div className="flex items-center gap-1"><Users className="h-4 w-4" />{course.students.toLocaleString()}</div>
-                          <div className="flex items-center gap-1"><Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />{course.rating}</div>
                         </div>
                       </div>
                       <CardTitle>{course.title}</CardTitle>

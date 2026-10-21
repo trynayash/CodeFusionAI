@@ -190,7 +190,7 @@ function Dashboard() {
     },
     { 
       icon: Clock, 
-      label: 'Hours Coded', 
+      label: 'Estimated Hours', 
       value: loading ? '...' : stats.totalHours.toString(), 
       color: 'text-green-400',
       bgColor: 'from-green-500/20 to-emerald-500/20',
@@ -223,14 +223,14 @@ function Dashboard() {
     },
     { 
       icon: Users, 
-      label: 'Browse Community', 
-      action: () => navigate('/community'), 
+      label: 'Browse Courses', 
+      action: () => navigate('/courses'), 
       color: 'from-green-500 to-emerald-500',
       textColor: 'text-green-100'
     },
     { 
       icon: Zap, 
-      label: 'AI Assistant', 
+      label: 'Code Tips', 
       action: () => navigate('/ai-assistant'), 
       color: 'from-yellow-500 to-orange-500',
       textColor: 'text-yellow-100'

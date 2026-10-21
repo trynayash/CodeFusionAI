@@ -236,9 +236,9 @@ export function IntelligentLearningAssistant({
       <Card className={`w-full ${className}`}>
         <CardContent className="p-6 text-center">
           <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-          <h3 className="text-lg font-semibold mb-2">Sign in to access AI Learning Assistant</h3>
+          <h3 className="text-lg font-semibold mb-2">Sign in to access the Learning Assistant</h3>
           <p className="text-muted-foreground">
-            Get personalized learning recommendations and intelligent code assistance.
+            Get learning tips and rule-based code suggestions.
           </p>
         </CardContent>
       </Card>
@@ -255,7 +255,7 @@ export function IntelligentLearningAssistant({
           </TabsTrigger>
           <TabsTrigger value="completions" className="flex items-center gap-2">
             <Brain className="h-4 w-4" />
-            AI Help
+            Help
           </TabsTrigger>
           <TabsTrigger value="errors" className="flex items-center gap-2">
             <AlertCircle className="h-4 w-4" />
@@ -354,7 +354,7 @@ export function IntelligentLearningAssistant({
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Brain className="h-5 w-5" />
-                AI Code Suggestions
+                Code Suggestions
                 {isAnalyzing && <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" />}
               </CardTitle>
             </CardHeader>
@@ -389,7 +389,7 @@ export function IntelligentLearningAssistant({
                 <div className="text-center py-8">
                   <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
                   <p className="text-muted-foreground">
-                    Start typing to get AI-powered code suggestions
+                    Start typing to get code suggestions
                   </p>
                 </div>
               )}

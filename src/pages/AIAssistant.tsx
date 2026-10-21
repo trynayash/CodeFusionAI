@@ -13,22 +13,22 @@ export default function AIAssistant() {
     {
       icon: <Zap className="w-8 h-8 text-primary" />,
       title: "Smart Code Completion",
-      description: "AI-powered code suggestions that understand your context and help you write better code faster."
+      description: "Suggestions based on keyword and pattern matching in the code you type."
     },
     {
       icon: <Shield className="w-8 h-8 text-secondary" />,
       title: "Error Detection",
-      description: "Real-time error detection and intelligent suggestions for fixing common programming mistakes."
+      description: "Checks for common mistakes, such as a missing main method in Java, with a short fix hint."
     },
     {
       icon: <Cpu className="w-8 h-8 text-accent" />,
       title: "Code Optimization",
-      description: "Automatic code optimization suggestions to improve performance and maintainability."
+      description: "Hints about patterns that are often slow or hard to read, like nested loops."
     },
     {
       icon: <Globe className="w-8 h-8 text-primary" />,
       title: "Multi-Language Support",
-      description: "Support for Python, JavaScript, TypeScript, Java, C++, and more programming languages."
+      description: "The checks cover Python, JavaScript, TypeScript, Java, C++ and a few other languages."
     }
   ];
 
@@ -52,12 +52,12 @@ export default function AIAssistant() {
                 </div>
               </div>
               <h1 className="text-4xl sm:text-6xl font-bold mb-6">
-                AI-Powered
-                <span className="gradient-text block">Coding Assistant</span>
+                Code Tips
+                <span className="gradient-text block">Assistant</span>
               </h1>
               <p className="text-xl text-white/80 mb-8 max-w-3xl mx-auto">
-                Supercharge your coding experience with our intelligent AI assistant that helps you write better code, 
-                fix errors, and learn faster than ever before.
+                The editor has side panels that explain code and suggest fixes. They use rule-based
+                pattern checks written in TypeScript. They do not call a live AI model yet.
               </p>
               <Button
                 size="lg"
@@ -65,7 +65,7 @@ export default function AIAssistant() {
                 onClick={() => navigate('/auth')}
                 className="bg-white text-primary hover:bg-white/90"
               >
-                Try AI Assistant Free
+                Open the Editor
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </motion.div>
@@ -82,10 +82,10 @@ export default function AIAssistant() {
               className="text-center mb-12"
             >
               <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-                AI Features That <span className="gradient-text">Transform</span> Your Coding
+                What the <span className="gradient-text">Panels</span> Do
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Experience the future of programming with intelligent assistance that adapts to your coding style.
+                Each panel looks at the code in the editor and shows tips.
               </p>
             </motion.div>
 
@@ -126,10 +126,10 @@ export default function AIAssistant() {
               className="text-center text-white"
             >
               <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-                Ready to Code with AI?
+                Want to Try It?
               </h2>
               <p className="text-xl text-white/80 mb-8 max-w-2xl mx-auto">
-                Join thousands of developers who are already using our AI assistant to write better code faster.
+                Create a free account and open the editor.
               </p>
               <Button
                 size="lg"

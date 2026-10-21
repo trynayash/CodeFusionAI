@@ -66,15 +66,6 @@ export function Header() {
               <BookOpen className="w-4 h-4" />
               Courses
             </Button>
-            <Button 
-              variant="ghost" 
-              size="sm"
-              className="text-foreground/80 hover:text-primary hover:bg-primary/10 transition-all duration-300 flex items-center gap-2"
-              onClick={() => navigate('/pricing')}
-            >
-              <DollarSign className="w-4 h-4" />
-              Pricing
-            </Button>
           </motion.nav>
 
           {/* Login/Signup Buttons */}

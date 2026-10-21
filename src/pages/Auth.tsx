@@ -186,8 +186,8 @@ export default function Auth() {
             </h2>
             <p className="text-xl text-slate-600 dark:text-slate-300 leading-relaxed">
               {isSignUp 
-                ? 'Join thousands of developers mastering programming with AI-powered learning and real-time code visualization.'
-                : 'Continue your coding adventure with personalized AI assistance and interactive learning experiences.'
+                ? 'Create a free account to use the browser code editor, save snippets and track course progress.'
+                : 'Sign in to get back to your editor, snippets and courses.'
               }
             </p>
           </motion.div>
@@ -204,24 +204,24 @@ export default function Auth() {
                 <Zap className="w-6 h-6 text-white relative z-10" />
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-cyan-400/20 animate-pulse"></div>
               </div>
-              <div className="text-lg font-bold text-slate-900 dark:text-white">AI-Powered</div>
-              <div className="text-xs text-slate-600 dark:text-slate-400">Smart Code Analysis</div>
+              <div className="text-lg font-bold text-slate-900 dark:text-white">Code Tips</div>
+              <div className="text-xs text-slate-600 dark:text-slate-400">Rule-based checks</div>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg relative overflow-hidden">
                 <Code className="w-6 h-6 text-white relative z-10" />
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 to-pink-400/20 animate-pulse delay-300"></div>
               </div>
-              <div className="text-lg font-bold text-slate-900 dark:text-white">50+ Languages</div>
-              <div className="text-xs text-slate-600 dark:text-slate-400">Multi-Language Support</div>
+              <div className="text-lg font-bold text-slate-900 dark:text-white">13 Languages</div>
+              <div className="text-xs text-slate-600 dark:text-slate-400">In the editor picker</div>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg relative overflow-hidden">
                 <Sparkles className="w-6 h-6 text-white relative z-10" />
                 <div className="absolute inset-0 bg-gradient-to-r from-green-400/20 to-emerald-400/20 animate-pulse delay-500"></div>
               </div>
-              <div className="text-lg font-bold text-slate-900 dark:text-white">Real-Time</div>
-              <div className="text-xs text-slate-600 dark:text-slate-400">Live Code Visualization</div>
+              <div className="text-lg font-bold text-slate-900 dark:text-white">Courses</div>
+              <div className="text-xs text-slate-600 dark:text-slate-400">Free videos and articles</div>
             </div>
           </motion.div>
 
@@ -240,34 +240,34 @@ export default function Auth() {
               <div className="flex items-center justify-center mb-4">
                 <div className="flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full border border-blue-300/30 dark:border-blue-700/30">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-xs font-medium text-blue-700 dark:text-blue-300">BETA ACCESS</span>
+                  <span className="text-xs font-medium text-blue-700 dark:text-blue-300">PERSONAL PROJECT</span>
                 </div>
               </div>
               
               <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2 text-center">
-                🚀 Next-Gen AI Coding Platform
+                A learning project by Yash Suthar
               </h3>
               
               <p className="text-slate-700 dark:text-slate-300 text-sm text-center leading-relaxed mb-4">
-                Experience the future of programming with our revolutionary AI assistant that understands your code, provides intelligent suggestions, and visualizes complex algorithms in real-time.
+                CodeFusion AI is a work in progress. The Run button shows a simulated result, and the code tip panels use pattern checks, not a live AI model.
               </p>
               
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
                   <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
-                  <span>Intelligent Code Completion</span>
+                  <span>Monaco code editor</span>
                 </div>
                 <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
                   <div className="w-1.5 h-1.5 bg-purple-500 rounded-full"></div>
-                  <span>Algorithm Visualization</span>
+                  <span>Saved snippets</span>
                 </div>
                 <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
                   <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
-                  <span>Real-time Error Detection</span>
+                  <span>Rule-based code tips</span>
                 </div>
                 <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
                   <div className="w-1.5 h-1.5 bg-pink-500 rounded-full"></div>
-                  <span>Interactive Learning</span>
+                  <span>Course progress</span>
                 </div>
               </div>
             </div>
@@ -301,7 +301,7 @@ export default function Auth() {
               </h2>
               <p className="text-slate-600 dark:text-slate-400">
                 {isSignUp 
-                  ? 'Join the community of developers learning with AI'
+                  ? 'Sign up with email, a magic link, Google or GitHub'
                   : 'Sign in to continue your coding journey'
                 }
               </p>

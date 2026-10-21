@@ -191,47 +191,13 @@ const HeroCodeEditor = () => {
       >
         <div className="flex items-center gap-2 mb-2">
           <Brain className="w-4 h-4 text-blue-400" />
-          <span className="text-blue-400 text-xs font-medium">AI Suggestion</span>
+          <span className="text-blue-400 text-xs font-medium">Code tip</span>
         </div>
         <p className="text-slate-300 text-xs">
           Consider adding error boundaries and loading states for better UX
         </p>
       </motion.div>
     </div>
-  );
-};
-
-// Stats Component
-const StatsSection = () => {
-  const stats = [
-    { icon: Users, value: 50000, suffix: '+', label: 'Active Developers', color: 'from-blue-500 to-cyan-500' },
-    { icon: Code, value: 100, suffix: 'M+', label: 'Lines Generated', color: 'from-purple-500 to-pink-500' },
-    { icon: Brain, value: 99, suffix: '%', label: 'AI Accuracy', color: 'from-green-500 to-teal-500' },
-    { icon: Zap, value: 2, suffix: 's', label: 'Response Time', color: 'from-orange-500 to-red-500' },
-  ];
-
-  return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-      {stats.map((stat, index) => (
-        <motion.div
-          key={stat.label}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: index * 0.1 }}
-          viewport={{ once: true }}
-          className="text-center group"
-        >
-          <div className={`w-16 h-16 bg-gradient-to-r ${stat.color} rounded-2xl p-4 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
-            <stat.icon className="w-full h-full text-white" />
-          </div>
-          <div className="text-3xl font-bold text-white mb-1">
-            <AnimatedCounter end={stat.value} />
-            {stat.suffix}
-          </div>
-          <div className="text-slate-400 text-sm">{stat.label}</div>
-                </motion.div>
-              ))}
-          </div>
   );
 };
 
@@ -266,13 +232,10 @@ export default function Index() {
               <a href="/features" className="text-slate-300 hover:text-white transition-colors duration-300 text-sm font-medium">
                 Features
               </a>
-              <a href="#courses" className="text-slate-300 hover:text-white transition-colors duration-300 text-sm font-medium">
+              <a href="/courses" className="text-slate-300 hover:text-white transition-colors duration-300 text-sm font-medium">
                 Courses
               </a>
-              <a href="#pricing" className="text-slate-300 hover:text-white transition-colors duration-300 text-sm font-medium">
-                Pricing
-              </a>
-              <a href="#about" className="text-slate-300 hover:text-white transition-colors duration-300 text-sm font-medium">
+              <a href="/about" className="text-slate-300 hover:text-white transition-colors duration-300 text-sm font-medium">
                 About
               </a>
             </nav>
@@ -317,13 +280,10 @@ export default function Index() {
                 <a href="/features" className="block px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-all duration-300">
                   Features
                 </a>
-                <a href="#courses" className="block px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-all duration-300">
+                <a href="/courses" className="block px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-all duration-300">
                   Courses
                 </a>
-                <a href="#pricing" className="block px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-all duration-300">
-                  Pricing
-                </a>
-                <a href="#about" className="block px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-all duration-300">
+                <a href="/about" className="block px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-all duration-300">
                   About
                 </a>
               </div>
@@ -362,7 +322,7 @@ export default function Index() {
                 className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-full"
               >
                 <Sparkles className="w-4 h-4 text-blue-400" />
-                <span className="text-sm text-blue-400 font-medium">AI-Powered Development Platform</span>
+                <span className="text-sm text-blue-400 font-medium">Browser code editor and course catalog</span>
               </motion.div>
 
                 {/* Main Headline */}
@@ -386,8 +346,8 @@ export default function Index() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.4 }}
                 >
-                Transform your development workflow with AI-powered code generation, 
-                intelligent debugging, and personalized learning paths. The future of coding is here.
+                Write code in a Monaco-based editor in your browser, get simple rule-based code tips,
+                and follow free course playlists with progress tracking and certificates.
                 </motion.p>
 
                 {/* CTA Buttons */}
@@ -410,39 +370,13 @@ export default function Index() {
                     size="lg"
                     variant="outline"
                   className="border-2 border-slate-600 hover:border-blue-500 text-white px-8 py-4 text-lg font-semibold rounded-xl bg-transparent hover:bg-blue-500/10 transition-all duration-300 group"
-                  onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => navigate('/courses')}
                   >
                   <Play className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                  Watch Demo
+                  Browse Courses
                   </Button>
                 </motion.div>
 
-                {/* Trust Indicators */}
-                <motion.div 
-                  className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-4"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.8 }}
-                >
-                  <div className="flex items-center gap-2 text-slate-300 text-sm">
-                    <div className="flex">
-                      {[1, 2, 3, 4, 5].map((i) => (
-                        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      ))}
-                    </div>
-                  <span>Loved By Many Fresh Developers</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="flex -space-x-2">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div key={i} className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full border-2 border-slate-900 flex items-center justify-center text-xs">
-                        {String.fromCharCode(65 + i)}
-                      </div>
-                    ))}
-                  </div>
-                  <span className="text-slate-300 text-sm">Join Them Now</span>
-                  </div>
-                </motion.div>
               </motion.div>
 
             {/* Right Side - Code Editor */}
@@ -490,28 +424,6 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
-        <div className="max-w-7xl mx-auto">
-            <motion.div
-            initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-white">
-              Trusted by Developers Worldwide
-                </h2>
-            <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-              Join the community that's revolutionizing software development
-              </p>
-            </motion.div>
-
-          <StatsSection />
-        </div>
-      </section>
-
       {/* Features Section */}
       <section id="features" className="py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
@@ -523,56 +435,42 @@ export default function Index() {
               className="text-center mb-16"
             >
             <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-white">
-              Supercharge Your Development
+              What CodeFusion AI Does
               </h2>
             <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-              Experience the next generation of coding tools powered by advanced AI
+              The parts of the platform that work today
               </p>
             </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             {[
               {
-                icon: Brain,
-                title: "AI Code Generation",
-                description: "Generate complex code structures instantly with context-aware AI that understands your project",
+                icon: Code,
+                title: "Browser Code Editor",
+                description: "A Monaco editor (the editor behind VS Code) with a picker for 13 languages. The Run button shows a simulated result, not real execution",
                 gradient: "from-blue-500 to-cyan-500",
-                features: ["Natural language to code", "Context-aware suggestions", "Multi-language support"]
+                features: ["Syntax highlighting", "Hello World starter code", "Save snippets to your account"]
               },
               {
                 icon: Shield,
-                title: "Smart Debugging",
-                description: "Identify and fix bugs before they cause issues with intelligent error detection and solutions",
+                title: "Code Tips",
+                description: "Rule-based checks that point out common mistakes and suggest improvements. They use pattern matching, not a live AI model",
                 gradient: "from-purple-500 to-pink-500",
-                features: ["Real-time error detection", "Automated fixes", "Performance optimization"]
+                features: ["Common error checks", "Refactoring hints", "Performance hints"]
               },
               {
                 icon: BookOpen,
-                title: "Personalized Learning",
-                description: "Adaptive learning paths that evolve with your skill level and coding style preferences",
+                title: "Courses",
+                description: "A course catalog where lessons link to free videos and articles",
                 gradient: "from-green-500 to-teal-500",
-                features: ["Custom learning paths", "Interactive tutorials", "Progress tracking"]
-              },
-              {
-                icon: Zap,
-                title: "Lightning Fast",
-                description: "Optimized for speed with instant responses and seamless integration into your workflow",
-                gradient: "from-orange-500 to-red-500",
-                features: ["Sub-second responses", "Cloud-powered", "Offline capability"]
+                features: ["Learning paths", "Lesson progress tracking", "Completion certificates"]
               },
               {
                 icon: Users,
-                title: "Team Collaboration",
-                description: "Work together seamlessly with real-time collaboration and shared AI insights",
+                title: "Accounts",
+                description: "Sign in with email and password, a magic link, or Google and GitHub, using Supabase Auth",
                 gradient: "from-indigo-500 to-purple-500",
-                features: ["Real-time sync", "Shared workspaces", "Team analytics"]
-              },
-              {
-                icon: Target,
-                title: "Project Optimization",
-                description: "Comprehensive project analysis with actionable insights for better code quality",
-                gradient: "from-pink-500 to-rose-500",
-                features: ["Code quality metrics", "Performance insights", "Best practice suggestions"]
+                features: ["Email verification", "Password reset", "Session timeout warning"]
               }
             ].map((feature, index) => (
                   <motion.div
@@ -618,7 +516,7 @@ export default function Index() {
               Master Any Language
               </h2>
             <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-              Get AI assistance for all major programming languages and frameworks
+              Starter templates and syntax highlighting for popular languages
               </p>
             </motion.div>
 
@@ -665,7 +563,7 @@ export default function Index() {
                 </h2>
             
             <p className="text-xl text-slate-300 max-w-2xl mx-auto">
-              Join thousands of developers who are already building tomorrow's applications with AI-powered tools
+              Create a free account and open the editor.
                 </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -679,20 +577,6 @@ export default function Index() {
                   </Button>
             </div>
 
-            <div className="flex items-center justify-center gap-8 pt-8">
-              <div className="flex items-center gap-2 text-slate-400">
-                <CheckCircle className="w-5 h-5 text-green-400" />
-                <span>Free to start</span>
-                </div>
-              <div className="flex items-center gap-2 text-slate-400">
-                <CheckCircle className="w-5 h-5 text-green-400" />
-                <span>No credit card required</span>
-              </div>
-              <div className="flex items-center gap-2 text-slate-400">
-                <CheckCircle className="w-5 h-5 text-green-400" />
-                <span>Cancel anytime</span>
-                </div>
-            </div>
               </motion.div>
           </div>
         </section>

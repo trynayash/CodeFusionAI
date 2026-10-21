@@ -25,24 +25,14 @@ const footerLinks = {
   Platform: [
     { name: "Features", href: "/features" },
     { name: "Courses", href: "/courses" },
-    { name: "AI Assistant", href: "/ai-assistant" },
-    { name: "Pricing", href: "/pricing" }
+    { name: "AI Assistant", href: "/ai-assistant" }
   ],
   Courses: [
     { name: "Data Structures & Algorithms", href: "/courses/data-structures-algorithms" },
-    { name: "Web Development", href: "/courses/web-development" },
-    { name: "Python Programming", href: "/courses/python" },
-    { name: "Full-Stack Development", href: "/courses/fullstack" }
+    { name: "Web Development", href: "/courses/web-development" }
   ],
-  Resources: [
-    { name: "Documentation", href: "/documentation" },
-    { name: "Community", href: "/community" },
-    { name: "Blog", href: "/blog" },
-    { name: "Help Center", href: "/help" }
-  ],
-  Company: [
-    { name: "About Us", href: "/about-us" },
-    { name: "Careers", href: "/careers" },
+  Project: [
+    { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
     { name: "Privacy Policy", href: "/privacy-policy" }
   ]
@@ -81,7 +71,7 @@ export function Footer({ brandSize = 'md' }: { brandSize?: 'sm' | 'md' | 'lg' | 
               Learn Any Language
             </h3>
             <p className={`${theme === 'dark' ? 'text-white/70' : 'text-slate-600'}`}>
-              Master the most popular programming languages with AI assistance
+              Practice popular programming languages in the browser editor
             </p>
           </div>
           
@@ -106,38 +96,13 @@ export function Footer({ brandSize = 'md' }: { brandSize?: 'sm' | 'md' | 'lg' | 
               </div>
               
               <p className={`mb-8 leading-relaxed ${theme === 'dark' ? 'text-white/70' : 'text-slate-600'}`}>
-                Empowering the next generation of developers through AI-powered learning. 
-                Transform your coding journey with personalized guidance and intelligent assistance.
+                A browser code editor and course catalog, built as a personal project by Yash Suthar.
               </p>
-
-              {/* Enhanced Newsletter Signup */}
-              <div className="space-y-4">
-                <div className={`flex items-center gap-2 ${theme === 'dark' ? 'text-white' : 'text-slate-800'}`}>
-                  <Zap className="w-4 h-4 text-accent" />
-                  <h3 className="font-semibold">Stay Updated</h3>
-                </div>
-                <div className="flex space-x-2">
-                  <div className="flex-1 relative">
-                    <input
-                      type="email"
-                      placeholder="Enter your email"
-                      className={`w-full px-4 py-3 backdrop-blur-sm border rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary/50 outline-none transition-all duration-300 ${
-                        theme === 'dark'
-                          ? 'bg-white/5 border-white/20 text-white placeholder:text-white/50'
-                          : 'bg-white/80 border-slate-300 text-slate-800 placeholder:text-slate-500'
-                      }`}
-                    />
-                  </div>
-                  <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary-dark hover:to-accent-dark text-white px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105">
-                    Subscribe
-                  </Button>
-                </div>
-              </div>
             </div>
 
             {/* Enhanced Links Sections */}
             <div className="lg:col-span-8">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
                 {Object.entries(footerLinks).map(([category, links]) => (
                   <div key={category}>
                     <h3 className={`font-bold mb-6 text-lg ${theme === 'dark' ? 'text-white' : 'text-slate-800'}`}>
@@ -172,9 +137,7 @@ export function Footer({ brandSize = 'md' }: { brandSize?: 'sm' | 'md' | 'lg' | 
           <div className="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
             {/* Enhanced Copyright */}
             <div className={`flex items-center gap-2 ${theme === 'dark' ? 'text-white/60' : 'text-slate-500'}`}>
-              © 2025 CodeFusionAI. All rights reserved. Built with 
-              <Heart className="w-4 h-4 text-red-400 animate-pulse" fill="currentColor" />
-              for developers worldwide.
+              © 2025 CodeFusionAI. Built by Yash Suthar.
             </div>
 
             {/* Enhanced Social Links */}
